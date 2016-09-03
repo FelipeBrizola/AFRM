@@ -1,0 +1,5 @@
+dist merge=ours
+conf.json merge=ours
+app.json merge=ours
+index.html merge=ours
+circle.yml merge=ours
