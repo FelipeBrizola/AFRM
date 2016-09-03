@@ -1,0 +1,34 @@
+{
+  "name": "afrm",
+  "version": "1.0.0",
+  "description": "Trabalho de desenvolvimento de sistemas",
+  "homepage": "https://github.com/felipebrizola/afrm",
+  "author": "felipe brizola <felipe.brizol@hotmail.com>",
+  "main": "index.html",
+  "license": "UNLICENSED",
+  "keywords": [
+    "AngularJS",
+    "Javascript",
+    "SPA"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "vendor"
+  ],
+  "dependencies": {
+    "angular": "~1.5.0",
+    "angular-animate": "~1.4.5",
+    "angular-aria": "~1.4.5",
+    "angular-material": "~1.1.0",
+    "angular-route": "~1.4.5",
+    "pling-ui": "^0.11.13",
+    "jquery": "~2.2.0"
+  },
+  "resolutions": {
+    "angular": "~1.5.0",
+    "angular-material": "~1.1.0",
+    "angular-datetime": "~2.1.0",
+    "jquery": "~2.2.0"
+  }
+}

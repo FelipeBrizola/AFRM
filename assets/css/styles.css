@@ -1,0 +1,6 @@
+/* REGRAS DE CONTRUÇÃO DE CSS
+    * Cada componente deve possuir seu próprio CSS dentro da pasta de componente;
+    * Antes de iniciar o desenvolvimento do CSS deve-se atentar para as outras telas de todos os sistema da Suite para não se refazer o que já temos pronto.
+    * Nomes de classes devem fazer sentido
+    * Alinhar todos os atributos pelo operador ':' conforme idéia abaixo (verificar o espaço após nome atributo)
+    * Se o arquivo CSS se tornar muito grande separar em sessões utilizando comentários */

@@ -1,0 +1,10 @@
+{
+    "core_url"        : "https://pling-core-api-dev.herokuapp.com/api/",
+    "local_core_url"  : "http://localhost:5000/api/",
+    "def_api_version" : "v1",
+    "environment"     : "local",
+    "auth"            : true,
+    "onRun"           : {
+        "cacheViews": false
+    }
+}
