@@ -1,0 +1,20 @@
+<div class="align container">
+  <div class="site__container">
+    <div class="grid__container">
+      <form action="" method="post" class="form form--login">
+        <div class="form__field">
+          <label class="fontawesome-user" for="login__username"><span class="hidden">Email</span></label>
+          <input ng-model="email" id="login__username" type="text" class="form__input" placeholder="Email" required>
+        </div>
+        <div class="form__field">
+          <label class="fontawesome-lock" for="login__password"><span class="hidden">Senha</span></label>
+          <input ng-model="password" id="login__password" type="password" class="form__input" placeholder="Senha" required>
+        </div>
+        <div ng-click="login(email, password)" class="form__field">
+          <input type="submit" value="Entrar">
+        </div>
+      </form>
+      <p class="text--center">Ainda não é cadastrado? <a href="/register">Cadastre-se agora</a> <span class="fontawesome-arrow-right"></span></p>
+    </div>
+  </div>
+</div>

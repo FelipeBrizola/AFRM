@@ -16,31 +16,13 @@
                 return moment(date).format('YYYY-MM-DD');
             };
 
-            // Pling Color Pallete Definition
-            $mdThemingProvider.definePalette('plingPallete', {
-                '50': '1165ae',
-                '100': 'ffcdd2',
-                '200': 'ef9a9a',
-                '300': 'e57373',
-                '400': 'ef5350',
-                '500': 'f44336',
-                '600': 'e53935',
-                '700': 'd32f2f',
-                '800': 'c62828',
-                '900': 'b71c1c',
-                'A100': 'ff8a80',
-                'A200': 'ff5252',
-                'A400': 'ff1744',
-                'A700': 'd50000',
-                'contrastDefaultColor': 'light'
-            });
-
             // Theme configuration
             $mdThemingProvider
-                .theme('default')
-                .primaryPalette('plingPallete', { 'default' : '50' })
-                .accentPalette('blue-grey', { 'default' : '400' })
-                .backgroundPalette('grey',  { 'default' : '50' });
+                .theme('forest')
+                .primaryPalette('blue')
+                .accentPalette('teal')
+                .warnPalette('red')
+                .backgroundPalette('grey');
         });
 
 }());
@@ -50,77 +32,16 @@
 
     // injecting dependencies
     MainController.$inject = [
-        '$scope', '$rootScope', '$timeout',
-        '$location', '$window',
-        '$mdToast'
+        '$scope', '$rootScope'
     ];
 
     // registering on angular
     angular.module('afrmApp').controller('MainController', MainController);
 
     // Main Controller
-    function MainController($scope, $rootScope, $timeout, $location, $window, $mdToast) {
+    function MainController($scope, $rootScope) {
 
-        var last = {
-            'bottom' : true,
-            'top'    : false,
-            'left'   : true,
-            'right'  : false
-        };
-
-        // Configurações
-        $rootScope.config = {
-
-            'chat': {
-                'isLoadOnStart' : false
-            }
-
-        };
-
-        // store the url to redirect later in case the user comes from other domain
-        $rootScope.isAppLoaded  = false;
-        $rootScope.loadingLayer = false;
-        $rootScope.isAppLoading = true;
-
-        /* TOAST NOTIFIER */
-        function sanitizePosition() {
-            var current = $scope.toastPosition;
-
-            if (current.bottom && last.top) { current.top = false; }
-            if (current.top && last.bottom) { current.bottom = false; }
-            if (current.right && last.left) { current.left = false; }
-            if (current.left && last.right) { current.right = false; }
-
-            last = angular.extend({}, current);
-        }
-
-        $scope.toastPosition = angular.extend({}, last);
-        $scope.getToastPosition = function () {
-            sanitizePosition();
-
-            return Object.keys($scope.toastPosition)
-                .filter(function (pos) { return $scope.toastPosition[pos]; })
-                .join(' ');
-        };
-
-        $rootScope.toast = function (text, delay) {
-            $mdToast.show(
-                $mdToast.simple()
-                    .textContent(text)
-                    .position($scope.getToastPosition())
-                    .hideDelay(delay || 2000)
-            );
-        };
-
-        // Route change
-        $rootScope.$on('$routeChangeStart', function () {
-            console.log('>>>');
-        });
-
-        $rootScope.$on('$routeChangeSuccess', function () {
-            console.log('<<<');
-        });
-
+        $rootScope.serverUrl = 'http://localhost:3000/';
     }
 }());
 
@@ -135,6 +56,16 @@
             .when('/', {
                 'templateUrl' : 'app/components/home/home.html',
                 'controller'  : 'HomeController'
+            })
+
+            .when('/login', {
+                'templateUrl' : 'app/components/login/login.html',
+                'controller'  : 'LoginController'
+            })
+
+            .when('/register', {
+                'templateUrl' : 'app/components/login/register.html',
+                'controller'  : 'RegisterController'
             })
 
             .otherwise({
@@ -155,4 +86,99 @@
     function HomeController() {
         console.log('teste');
     }
+}());
+
+(function() {
+
+    'use strict';
+
+    angular.module('afrmApp').controller('LoginController', LoginController);
+
+    LoginController.$inject = [ '$scope', 'credentialsService' ];
+
+    function LoginController($scope, credentialsService) {
+
+        $scope.login = function(email, pass) {
+            var credential = {
+                'email': email,
+                'password': pass
+            };
+
+            credentialsService.login(credential)
+                .success(function (token) {
+                    if (token)
+                        window.sessionStorage.setItem('TOKEN', token);
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
+        };
+
+        (function init() {
+            console.log('logincontroller');
+        }());
+    }
+}());
+
+(function() {
+
+    'use strict';
+
+    angular.module('afrmApp').controller('RegisterController', RegisterController);
+
+    RegisterController.$inject = [ '$scope', 'credentialsService', '$location', '$mdToast', '$timeout' ];
+
+    function RegisterController($scope, credentialsService, $location, $mdToast, $timeout) {
+
+        $scope.createAccount = function(usr) {
+            credentialsService.create(usr)
+                .success(function(result) {
+                    if (result) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Usuário criado com sucesso')
+                                .position('bottom')
+                                .hideDelay(3000)
+                        );
+                        $timeout(function() {
+                            $location('/login');
+                        }, 3000);
+                    }
+
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
+        };
+
+    }
+}());
+
+(function () {
+
+    'use strict';
+
+    function CredentialsService($http, $rootScope) {
+
+        var module = 'credentials';
+
+        this.login = function (credential) {
+            var querystring = '?email=' + credential.email + '&password=' + credential.password;
+
+            return $http.get($rootScope.serverUrl + module + querystring);
+        };
+
+        this.create =  function(usr) {
+            return $http.post($rootScope.serverUrl + module, usr);
+        };
+
+        this.logout = function (token) {
+            return $http.get($rootScope.serverUrl + module + '/' + token);
+        };
+    }
+
+    CredentialsService.$inject = [ '$http', '$rootScope' ];
+
+    angular.module('afrmApp').service('credentialsService', CredentialsService);
+
 }());

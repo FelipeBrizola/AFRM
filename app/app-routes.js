@@ -11,6 +11,16 @@
                 'controller'  : 'HomeController'
             })
 
+            .when('/login', {
+                'templateUrl' : 'app/components/login/login.html',
+                'controller'  : 'LoginController'
+            })
+
+            .when('/register', {
+                'templateUrl' : 'app/components/login/register.html',
+                'controller'  : 'RegisterController'
+            })
+
             .otherwise({
                 'redirectTo': '/'
             });

@@ -1,0 +1,44 @@
+<md-card style="width: 90%;margin: auto; margin-top: 30px;" layout="column" ng-cloak>
+
+  <md-content layout-padding>
+    <h2 style="color:rgb(63,81,181)">Dados cadastrais</h2>
+    <form name="createForm">
+
+      <div layout="row">
+        <md-input-container flex="50">
+          <label>Nome completo</label>
+          <input required name="name" ng-model="usr.name">
+          <div ng-messages="createForm.name.$error">
+            <div ng-message="required">Este campo é obrigatório.</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container flex="50">
+          <label>Curso</label>
+          <md-select name="type" ng-model="usr.class" required>
+            <md-option value="app">Administracao</md-option>
+            <md-option value="web">Eng da cabeca da minha rola</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <md-input-container class="md-block">
+        <label>Email</label>
+        <input required type="email" name="email" ng-model="project.clientEmail"
+               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+
+        <div ng-messages="createForm.email.$error" role="alert">
+          <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+            O campo deve conter um email válido'
+          </div>
+        </div>
+      </md-input-container>
+
+      <div>
+        <md-button ng-click="createAccount(usr)" type="submit" class="md-primary md-raised">Enviar</md-button>
+      </div>
+
+    </form>
+  </md-content>
+
+</md-card>
