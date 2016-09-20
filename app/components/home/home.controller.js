@@ -6,7 +6,14 @@
 
     HomeController.$inject = [ '$scope' ];
 
-    function HomeController() {
-        console.log('teste');
+    function HomeController($scope) {
+
+        $scope.approveSolicitation =  function() {
+
+        };
+
+        $scope.insertSolicitation = function() {
+
+        };
     }
 }());

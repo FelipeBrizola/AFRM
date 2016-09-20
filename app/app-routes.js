@@ -16,7 +16,17 @@
                 'controller'  : 'LoginController'
             })
 
-            .when('/register', {
+            .when('/solicitacao', {
+                'templateUrl' : 'app/components/solicitation/solicitation.html',
+                'controller'  : 'SolicitationController'
+            })
+
+            .when('/empresas', {
+                'templateUrl' : 'app/components/companies/companies.html',
+                'controller'  : 'CompaniesController'
+            })
+
+            .when('/registro', {
                 'templateUrl' : 'app/components/login/register.html',
                 'controller'  : 'RegisterController'
             })

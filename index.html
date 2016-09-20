@@ -30,6 +30,23 @@
         <!-- LAYOUT WRAPPER -->
         <section class="master-content">
 
+            <md-tabs style="min-height: 0 !important">
+                
+                <md-tab ng-click="menu('/solicitacao')" label="Solicitações">
+           
+                </md-tab>
+                <md-tab ng-click="menu('/empresas')" label="Empresas">
+                
+                </md-tab>
+                <md-tab ng-click="menu('/empresa')" label="menu 3">
+            
+                </md-tab>
+                <md-tab ng-click="menu('/empresa')" label="menu 4">
+            
+                </md-tab>
+   
+            </md-tabs>
+
             <!-- DYNAMIC CONTENT -->
             <div class="dynamic-content">
                 <ng-view/>

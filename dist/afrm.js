@@ -32,16 +32,20 @@
 
     // injecting dependencies
     MainController.$inject = [
-        '$scope', '$rootScope'
+        '$scope', '$rootScope', '$location'
     ];
 
     // registering on angular
     angular.module('afrmApp').controller('MainController', MainController);
 
     // Main Controller
-    function MainController($scope, $rootScope) {
+    function MainController($scope, $rootScope, $location) {
 
         $rootScope.serverUrl = 'http://localhost:3000/';
+
+        $scope.menu = function(path) {
+            $location.path(path);
+        };
     }
 }());
 
@@ -63,7 +67,17 @@
                 'controller'  : 'LoginController'
             })
 
-            .when('/register', {
+            .when('/solicitacao', {
+                'templateUrl' : 'app/components/solicitation/solicitation.html',
+                'controller'  : 'SolicitationController'
+            })
+
+            .when('/empresas', {
+                'templateUrl' : 'app/components/companies/companies.html',
+                'controller'  : 'CompaniesController'
+            })
+
+            .when('/registro', {
                 'templateUrl' : 'app/components/login/register.html',
                 'controller'  : 'RegisterController'
             })
@@ -79,12 +93,39 @@
 
     'use strict';
 
+    angular.module('afrmApp').controller('CompaniesController', CompaniesController);
+
+    CompaniesController.$inject = [ '$scope' ];
+
+    function CompaniesController($scope) {
+
+        $scope.approveSolicitation =  function() {
+
+        };
+
+        $scope.insertSolicitation = function() {
+
+        };
+    }
+}());
+
+(function() {
+
+    'use strict';
+
     angular.module('afrmApp').controller('HomeController', HomeController);
 
     HomeController.$inject = [ '$scope' ];
 
-    function HomeController() {
-        console.log('teste');
+    function HomeController($scope) {
+
+        $scope.approveSolicitation =  function() {
+
+        };
+
+        $scope.insertSolicitation = function() {
+
+        };
     }
 }());
 
@@ -151,6 +192,26 @@
                 });
         };
 
+    }
+}());
+
+(function() {
+
+    'use strict';
+
+    angular.module('afrmApp').controller('SolicitationController', SolicitationController);
+
+    SolicitationController.$inject = [ '$scope' ];
+
+    function SolicitationController($scope) {
+
+        $scope.approveSolicitation =  function() {
+
+        };
+
+        $scope.insertSolicitation = function() {
+
+        };
     }
 }());
 

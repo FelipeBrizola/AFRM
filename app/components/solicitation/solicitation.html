@@ -1,0 +1,57 @@
+<md-card style="margin-top: 30px; ">
+    <md-tabs style="min-height: 500px">
+
+        <!--PESQUISAR SOLICITACAO-->
+        <md-tab label="Pesquisar">
+        </md-tab>
+
+        <!--APROVAR SOLICITACAO-->
+        <md-tab label="Aprovar">
+        </md-tab>
+
+        <!--INCLUIR SOLICITACAO DE ESTAGIO-->
+        <md-tab label="Incluir">
+
+        <md-content layout-padding>
+            <form name="createForm">
+
+                <div layout="row">
+                    <md-input-container flex="50">
+                        <label>Nome completo</label>
+                        <input required name="name" ng-model="usr.name">
+                        <div ng-messages="createForm.name.$error">
+                            <div ng-message="required">Este campo é obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container flex="50">
+                        <label>Curso</label>
+                        <md-select name="type" ng-model="usr.class" required>
+                            <md-option value="app">Administracao</md-option>
+                            <md-option value="web">Eng da cabeca da minha rola</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <md-input-container class="md-block">
+                    <label>Email</label>
+                    <input required type="email" name="email" ng-model="project.clientEmail"
+                            minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+
+                    <div ng-messages="createForm.email.$error" role="alert">
+                        <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                        O campo deve conter um email válido'
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <div>
+                    <md-button ng-click="createAccount(usr)" type="submit" class="md-primary md-raised">Enviar</md-button>
+                </div>
+
+            </form>
+        </md-content>
+
+        </md-tab>
+    </md-tabs>
+</md-card>
