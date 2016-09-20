@@ -12,6 +12,71 @@
         <!--INCLUIR SOLICITACAO DE ESTAGIO-->
         <md-tab label="Incluir">
 
+        <md-content layout-padding>
+            <form name="createForm">
+
+                <div layout="row">
+                    <md-input-container flex="50">
+                        <label>Nome Fantasia</label>
+                        <input required name="name" ng-model="usr.name">
+                        <div ng-messages="createForm.name.$error">
+                            <div ng-message="required">Este campo é obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container flex="50" style="margin-left: 30px">
+                        <label>Razão Social</label>
+                        <input required name="name" ng-model="usr.name">
+                        <div ng-messages="createForm.name.$error">
+                            <div ng-message="required">Este campo é obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container flex="50" style="margin-left: 30px">
+                        <label>CNPJ</label>
+                        <input required name="name" ng-model="usr.name">
+                        <div ng-messages="createForm.name.$error">
+                            <div ng-message="required">Este campo é obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container flex="30">
+                        <label>Email</label>
+                        <input required type="email" name="email" ng-model="project.clientEmail"
+                                minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+
+                        <div ng-messages="createForm.email.$error" role="alert">
+                            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                            O campo deve conter um email válido'
+                            </div>
+                        </div>
+                    </md-input-container>
+                    
+                    <md-input-container flex="30" style="margin-left: 30px">
+                        <label>Telefone</label>
+                        <input required name="name" ng-model="usr.name">
+                        <div ng-messages="createForm.name.$error">
+                            <div ng-message="required">Este campo é obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                    
+                    <md-input-container style="margin-left: 30px">
+                        <md-tooltip md-direction="bottom">
+                            {{ company.active === true ? 'desativar' : 'ativar'}}
+                        </md-tooltip>
+                        <md-switch ng-model="company.active" aria-label="Switch 1"></md-switch>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-button ng-click="createAccount(usr)" type="submit" class="md-primary md-raised">Enviar</md-button>
+                </div>
+
+            </form>
+        </md-content>
+
         </md-tab>
     </md-tabs>
 </md-card>
