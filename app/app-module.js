@@ -6,7 +6,8 @@
         'ngMaterial',
         'ngAnimate',
         'ngRoute',
-        'angular.filter'
+        'angular.filter',
+        'md.data.table'
     ])
 
         .config(function ($mdThemingProvider, $mdDateLocaleProvider) {

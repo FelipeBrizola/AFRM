@@ -1,82 +1,55 @@
-<md-card style="margin-top: 30px; ">
-    <md-tabs style="min-height: 500px">
+<md-content flex="100" style="min-width: 800px; margin: auto; max-width: 93%; margin-top: 50px">
 
-        <!--PESQUISAR SOLICITACAO-->
-        <md-tab label="Pesquisar">
-        </md-tab>
+    <!-- PESQUISA -->
+    <div style="height: 80px; background-color: white !important; box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)">
+        
 
-        <!--APROVAR SOLICITACAO-->
-        <md-tab label="Aprovar">
-        </md-tab>
+        <md-input-container ng-keypress="search($event)" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
+            <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_search.svg"></md-icon>
+            <input ng-model="tableParams.query" type="text" placeholder="Pesquisar" />
+        </md-input-container>
 
-        <!--INCLUIR SOLICITACAO DE ESTAGIO-->
-        <md-tab label="Incluir">
+        <div style="display: inline-block; width: 74%;">
+            <md-button style="margin-bottom: 22px;" ng-click="search()" class="md-raised md-primary no-ripple">Pesquisar</md-button>
 
-        <md-content layout-padding>
-            <form name="createForm">
+            <md-button style="float: right; clear: right" class="md-raised md-primary no-ripple" ng-click="showDialog()">
+                <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_add.svg"></md-icon>
+            </md-button>
+        </div>
+        
+    </div>
 
-                <div layout="row">
-                    <md-input-container flex="50">
-                        <label>Nome Fantasia</label>
-                        <input required name="name" ng-model="usr.name">
-                        <div ng-messages="createForm.name.$error">
-                            <div ng-message="required">Este campo é obrigatório.</div>
-                        </div>
-                    </md-input-container>
+    <!-- TABLE CONTAINER --> 
+    <md-card style="margin: auto; margin-top: 12px;">
 
-                    <md-input-container flex="50" style="margin-left: 30px">
-                        <label>Razão Social</label>
-                        <input required name="name" ng-model="usr.name">
-                        <div ng-messages="createForm.name.$error">
-                            <div ng-message="required">Este campo é obrigatório.</div>
-                        </div>
-                    </md-input-container>
+        <md-table-container>
+            <table md-table md-row-select ng-model="companySelected">
+                <thead md-head md-order="tableParams.sort" md-on-reorder="reorderTable">
+                    <tr md-row>
+                        <th md-column md-order-by="name">Nome</th>
+                        <th md-column md-order-by="cnpj">CNPJ</th>
+                        <th md-column md-order-by="email">Email</th>
+                        <th md-column md-order-by="phone">Telefone</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th >
+                            <md-progress-linear layout="row" md-mode="indeterminate" ng-show="isLoadingCompanies" class="md-accent"></md-progress-linear>
+                        </th>
+                    </tr>
+                    </thead>
+                <tbody md-body>
+                <tr md-row md-select="company" ng-repeat="company in companies track by $index" ng-click="showDialog(company)" style="cursor: pointer">
+                    <td md-cell>{{company.name}}</td>
+                    <td md-cell>{{company.cnpj}}</td>
+                    <td md-cell>{{company.email}}</td>
+                    <td md-cell>{{company.phone}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tableParams.limit" md-page="tableParams.page" md-limit-options="[5, 10, 15]" md-total="{{tableParams.total}}" md-on-paginate="getCompanies" md-page-select></md-table-pagination>
+    </md-card>
 
-                    <md-input-container flex="50" style="margin-left: 30px">
-                        <label>CNPJ</label>
-                        <input required name="name" ng-model="usr.name">
-                        <div ng-messages="createForm.name.$error">
-                            <div ng-message="required">Este campo é obrigatório.</div>
-                        </div>
-                    </md-input-container>
-                </div>
-
-                <div layout="row">
-                    <md-input-container flex="30">
-                        <label>Email</label>
-                        <input required type="email" name="email" ng-model="project.clientEmail"
-                                minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
-
-                        <div ng-messages="createForm.email.$error" role="alert">
-                            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-                            O campo deve conter um email válido'
-                            </div>
-                        </div>
-                    </md-input-container>
-                    
-                    <md-input-container flex="30" style="margin-left: 30px">
-                        <label>Telefone</label>
-                        <input required name="name" ng-model="usr.name">
-                        <div ng-messages="createForm.name.$error">
-                            <div ng-message="required">Este campo é obrigatório.</div>
-                        </div>
-                    </md-input-container>
-                    
-                    <md-input-container style="margin-left: 30px">
-                        <md-tooltip md-direction="bottom">
-                            {{ company.active === true ? 'desativar' : 'ativar'}}
-                        </md-tooltip>
-                        <md-switch ng-model="company.active" aria-label="Switch 1"></md-switch>
-                    </md-input-container>
-                </div>
-
-                <div>
-                    <md-button ng-click="createAccount(usr)" type="submit" class="md-primary md-raised">Enviar</md-button>
-                </div>
-
-            </form>
-        </md-content>
-
-        </md-tab>
-    </md-tabs>
-</md-card>
+</md-content>

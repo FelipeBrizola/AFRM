@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/felipebrizola/afrm"
   },
-   "bugs": {
+  "bugs": {
     "url": "https://github.com/felipebrizola/afrm/issues"
   },
   "keywords": [
@@ -40,6 +40,7 @@
     "gulp-util": "^2.0.0"
   },
   "dependencies": {
+    "angular-material-data-table": "^0.10.9",
     "express": "^4.12.3",
     "serve-static": "^1.9.2"
   }

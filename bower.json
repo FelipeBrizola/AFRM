@@ -22,13 +22,14 @@
     "angular-aria": "~1.4.5",
     "angular-material": "~1.1.0",
     "angular-route": "~1.4.5",
-    "pling-ui": "^0.11.13",
-    "jquery": "~2.2.0"
+    "jquery": "~2.2.0",
+    "angular-material-data-table": "^0.10.9"
   },
   "resolutions": {
     "angular": "~1.5.0",
     "angular-material": "~1.1.0",
     "angular-datetime": "~2.1.0",
-    "jquery": "~2.2.0"
+    "jquery": "~2.2.0",
+    "angular-material-data-table": "^0.10.9"
   }
 }

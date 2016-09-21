@@ -17,5 +17,6 @@
         $scope.menu = function(path) {
             $location.path(path);
         };
+
     }
 }());
