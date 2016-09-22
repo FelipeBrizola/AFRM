@@ -91,56 +91,74 @@
         $locationProvider.html5Mode(true);
     }
 }());
-(function () {
+(function() {
 
     'use strict';
 
-    function CompaniesService($http, $rootScope) {
+    angular.module('afrmApp').controller('CompaniesController', CompaniesController);
 
-        var module = 'companies';
+    CompaniesController.$inject = [ '$scope', '$mdDialog', 'companiesService' ];
 
-        this.create = function (company) {
-            return $http.post($rootScope.serverUrl + module, company);
+    function CompaniesController($scope, $mdDialog, companiesService) {
+
+        // cria ou edita company
+        $scope.showDialog = function(company) {
+
+            $mdDialog.show({
+                'controller': 'ManageCompanyController',
+                'templateUrl': 'app/shared/templates/modals/manage-company.html',
+                'parent': angular.element(document.body),
+                'locals': { 'company': company || null },
+                'clickOutsideToClose':true
+            }).then(function(company, isNewCompany) {
+                if (company) {
+                    if (isNewCompany)
+                        $scope.companies.push(company);
+                    else {
+                        $scope.companies.forEach(function(comp) {
+                            if (comp._id === company._id)
+                                comp =  company;
+                        });
+                    }
+
+                }
+
+            }, function() {});
         };
 
-        this.update = function (company) {
-            return $http.put($rootScope.serverUrl + module, company);
-        };
+        (function init() {
+
+            companiesService.get()
+                .success(function(companies) {
+                    $scope.companies = companies;
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
+        }());
     }
-
-    CompaniesService.$inject = [ '$http', '$rootScope' ];
-
-    angular.module('afrmApp').service('companiesService', CompaniesService);
-
 }());
-(function () {
+
+(function() {
 
     'use strict';
 
-    function CredentialsService($http, $rootScope) {
+    angular.module('afrmApp').controller('HomeController', HomeController);
 
-        var module = 'credentials';
+    HomeController.$inject = [ '$scope' ];
 
-        this.login = function (credential) {
-            var querystring = '?email=' + credential.email + '&password=' + credential.password;
+    function HomeController($scope) {
 
-            return $http.get($rootScope.serverUrl + module + querystring);
+        $scope.approveSolicitation =  function() {
+
         };
 
-        this.create =  function(usr) {
-            return $http.post($rootScope.serverUrl + module, usr);
-        };
+        $scope.insertSolicitation = function() {
 
-        this.logout = function (token) {
-            return $http.get($rootScope.serverUrl + module + '/' + token);
         };
     }
-
-    CredentialsService.$inject = [ '$http', '$rootScope' ];
-
-    angular.module('afrmApp').service('credentialsService', CredentialsService);
-
 }());
+
 (function() {
 
     'use strict';
@@ -227,88 +245,60 @@
     }
 }());
 
-(function() {
+(function () {
 
     'use strict';
 
-    angular.module('afrmApp').controller('HomeController', HomeController);
+    function CompaniesService($http, $rootScope) {
 
-    HomeController.$inject = [ '$scope' ];
+        var module = 'companies';
 
-    function HomeController($scope) {
-
-        $scope.approveSolicitation =  function() {
-
+        this.create = function (company) {
+            return $http.post($rootScope.serverUrl + module, company);
         };
 
-        $scope.insertSolicitation = function() {
+        this.update = function (company) {
+            return $http.put($rootScope.serverUrl + module, company);
+        };
 
+        this.get = function () {
+            return $http.get($rootScope.serverUrl + module);
         };
     }
-}());
 
-(function() {
+    CompaniesService.$inject = [ '$http', '$rootScope' ];
+
+    angular.module('afrmApp').service('companiesService', CompaniesService);
+
+}());
+(function () {
 
     'use strict';
 
-    angular.module('afrmApp').controller('CompaniesController', CompaniesController);
+    function CredentialsService($http, $rootScope) {
 
-    CompaniesController.$inject = [ '$scope', '$mdDialog', '$rootScope' ];
+        var module = 'credentials';
 
-    function CompaniesController($scope, $mdDialog, $rootScope) {
+        this.login = function (credential) {
+            var querystring = '?email=' + credential.email + '&password=' + credential.password;
 
-        // cria ou edita company
-        $scope.showDialog = function(company) {
-
-            $mdDialog.show({
-                'controller': 'ManageCompanyController',
-                'templateUrl': 'app/shared/templates/modals/manage-company.html',
-                'parent': angular.element(document.body),
-                'locals': { 'company': company || null },
-                'clickOutsideToClose':true
-            }).then(function(company, isNewCompany) {
-                if (company) {
-                    if (isNewCompany)
-                        $scope.companies.push(company);
-                    else {
-                        $scope.companies.forEach(function(comp) {
-                            if (comp._id === company._id)
-                                comp =  company;
-                        });
-                    }
-
-                }
-
-            }, function() {});
+            return $http.get($rootScope.serverUrl + module + querystring);
         };
 
-        (function init() {
+        this.create =  function(usr) {
+            return $http.post($rootScope.serverUrl + module, usr);
+        };
 
-            $scope.companies = [
-                {
-                    'name':'HP',
-                    'cnpj':'123456789',
-                    'email': 'hp@contato.com',
-                    'phone':'5191191919'
-                },
-                {
-                    'name':'DELL',
-                    'cnpj':'987654321',
-                    'email': 'dell@contato.com',
-                    'phone':'51999999999'
-                },
-                {
-                    'name':'Tlantic',
-                    'cnpj':'1121212121',
-                    'email': 'tlantic@contato.com',
-                    'phone':'5199999911'
-                }
-            ];
-
-        }());
+        this.logout = function (token) {
+            return $http.get($rootScope.serverUrl + module + '/' + token);
+        };
     }
-}());
 
+    CredentialsService.$inject = [ '$http', '$rootScope' ];
+
+    angular.module('afrmApp').service('credentialsService', CredentialsService);
+
+}());
 (function () {
 
     'use strict';
@@ -356,7 +346,7 @@
                 $scope.isEditing = true;
 
             $scope.company = locals.company || {};
- 
+
         })();
     }
 

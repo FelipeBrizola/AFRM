@@ -4,9 +4,9 @@
 
     angular.module('afrmApp').controller('CompaniesController', CompaniesController);
 
-    CompaniesController.$inject = [ '$scope', '$mdDialog' ];
+    CompaniesController.$inject = [ '$scope', '$mdDialog', 'companiesService' ];
 
-    function CompaniesController($scope, $mdDialog) {
+    function CompaniesController($scope, $mdDialog, companiesService) {
 
         // cria ou edita company
         $scope.showDialog = function(company) {
@@ -35,27 +35,13 @@
 
         (function init() {
 
-            $scope.companies = [
-                {
-                    'name':'HP',
-                    'cnpj':'123456789',
-                    'email': 'hp@contato.com',
-                    'phone':'5191191919'
-                },
-                {
-                    'name':'DELL',
-                    'cnpj':'987654321',
-                    'email': 'dell@contato.com',
-                    'phone':'51999999999'
-                },
-                {
-                    'name':'Tlantic',
-                    'cnpj':'1121212121',
-                    'email': 'tlantic@contato.com',
-                    'phone':'5199999911'
-                }
-            ];
-
+            companiesService.get()
+                .success(function(companies) {
+                    $scope.companies = companies;
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
         }());
     }
 }());

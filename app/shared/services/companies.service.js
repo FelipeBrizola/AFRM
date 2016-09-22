@@ -13,6 +13,10 @@
         this.update = function (company) {
             return $http.put($rootScope.serverUrl + module, company);
         };
+
+        this.get = function () {
+            return $http.get($rootScope.serverUrl + module);
+        };
     }
 
     CompaniesService.$inject = [ '$http', '$rootScope' ];
