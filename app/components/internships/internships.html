@@ -1,0 +1,66 @@
+<md-content flex="100" style="min-width: 800px; margin: auto; max-width: 93%; margin-top: 50px">
+
+    <!-- PESQUISA -->
+    <div style="height: 80px; background-color: white !important; box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)">
+        
+
+        <md-input-container ng-keypress="search($event)" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
+            <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_search.svg"></md-icon>
+            <input ng-model="tableParams.query" type="text" placeholder="Aluno" />
+        </md-input-container>
+
+        <div style="display: inline-block; width: 74%;">
+
+            <md-input-container style="margin: 0 2%; 0 2%; min-width: 200px;">
+            <label>Filtro</label>
+                <md-select ng-model="filter">
+                    <md-option ng-repeat="item in status" >
+                    {{item}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-button style="margin-bottom: 22px;" ng-click="search()" class="md-raised md-primary no-ripple">Pesquisar</md-button>
+                    
+        </div>
+        
+    </div>
+
+    <!-- TABLE CONTAINER --> 
+    <md-card style="margin: auto; margin-top: 12px;">
+
+        <md-table-container>
+            <table md-table md-row-select ng-model="companySelected">
+                <thead md-head md-order="tableParams.sort" md-on-reorder="reorderTable">
+                    <tr md-row>
+                        <th md-column md-order-by="company">Empresa</th>
+                        <th md-column md-order-by="studant">Aluno</th>
+                        <th md-column md-order-by="class">Curso</th>
+                        <th md-column md-order-by="begin">Comeco</th>
+                        <th md-column md-order-by="end">Termino</th>
+                        <th md-column md-order-by="status">Status</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th >
+                            <md-progress-linear layout="row" md-mode="indeterminate" ng-show="isLoadingCompanies" class="md-accent"></md-progress-linear>
+                        </th>
+                    </tr>
+                    </thead>
+                <tbody md-body>
+                <tr md-row md-select="company" ng-repeat="internship in internships track by $index" ng-click="showDialog(internship)" style="cursor: pointer">
+                    <td md-cell>{{internship.company}}</td>
+                    <td md-cell>{{internship.student}}</td>
+                    <td md-cell>{{internship.class}}</td>
+                    <td md-cell>{{internship.begin}}</td>
+                    <td md-cell>{{internship.end}}</td>
+                    <td md-cell>{{internship.status === true ? 'Aprovado' : 'Reprovado'}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tableParams.limit" md-page="tableParams.page" md-limit-options="[5, 10, 15]" md-total="{{tableParams.total}}" md-on-paginate="getCompanies" md-page-select></md-table-pagination>
+    </md-card>
+
+</md-content>

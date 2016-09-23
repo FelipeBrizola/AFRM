@@ -79,6 +79,11 @@
                 'controller'  : 'CompaniesController'
             })
 
+            .when('/estagios', {
+                'templateUrl' : 'app/components/internships/internships.html',
+                'controller'  : 'InternshipsController'
+            })
+
             .when('/registro', {
                 'templateUrl' : 'app/components/login/register.html',
                 'controller'  : 'RegisterController'
@@ -156,6 +161,61 @@
         $scope.insertSolicitation = function() {
 
         };
+    }
+}());
+
+(function() {
+
+    'use strict';
+
+    angular.module('afrmApp').controller('InternshipsController', InternshipsController);
+
+    InternshipsController.$inject = [ '$scope', '$mdDialog' ];
+
+    function InternshipsController($scope, $mdDialog) {
+
+        $scope.showDialog = function(internship) {
+
+            $mdDialog.show({
+                'controller': 'InternshipDialogController',
+                'templateUrl': 'app/shared/templates/modals/internship-dialog.html',
+                'parent': angular.element(document.body),
+                'locals': { 'internship': internship || null },
+                'clickOutsideToClose':true
+            }).then(function() {
+
+            }, function() {});
+        };
+
+        (function init() {
+            $scope.status = ['Aprovado', 'Em andamento', 'Aguardando aprovação'];
+            $scope.internships = [
+                {
+                    'company': 'HP',
+                    'student': 'Felipe',
+                    'class': 'Ciencia da comp.',
+                    'begin': '10/06/2016',
+                    'end': '10/12/2016',
+                    'status': true
+                },
+                {
+                    'company': 'HP',
+                    'student': 'Felipe',
+                    'class': 'Ciencia da comp.',
+                    'begin': '10/06/2016',
+                    'end': '10/12/2016',
+                    'status': true
+                },
+                {
+                    'company': 'Pling',
+                    'student': 'Teste',
+                    'class': 'Eng da comp.',
+                    'begin': '10/06/2016',
+                    'end': '10/12/2016',
+                    'status': false
+                }
+            ];
+        }());
     }
 }());
 
@@ -297,6 +357,26 @@
     CredentialsService.$inject = [ '$http', '$rootScope' ];
 
     angular.module('afrmApp').service('credentialsService', CredentialsService);
+
+}());
+(function () {
+
+    'use strict';
+
+    function InternshipDialogController($scope, $mdDialog, locals) {
+
+        $scope.save = function(internship) {
+            return internship;
+        };
+
+        (function init() {
+            $scope.internship = locals.internship || {};
+        })();
+    }
+
+    InternshipDialogController.$inject = [ '$scope', '$mdDialog', 'locals' ];
+
+    angular.module('afrmApp').controller('InternshipDialogController', InternshipDialogController);
 
 }());
 (function () {

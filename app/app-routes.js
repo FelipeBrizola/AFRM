@@ -26,6 +26,11 @@
                 'controller'  : 'CompaniesController'
             })
 
+            .when('/estagios', {
+                'templateUrl' : 'app/components/internships/internships.html',
+                'controller'  : 'InternshipsController'
+            })
+
             .when('/registro', {
                 'templateUrl' : 'app/components/login/register.html',
                 'controller'  : 'RegisterController'
