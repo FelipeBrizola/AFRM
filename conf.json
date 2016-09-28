@@ -1,5 +1,5 @@
 {
-    "core_url"        : "https://pling-core-api-dev.herokuapp.com/api/",
+    "core_url"        : "https://dev-sistemas.herokuapp.com/",
     "local_core_url"  : "http://localhost:5000/api/",
     "def_api_version" : "v1",
     "environment"     : "local",
