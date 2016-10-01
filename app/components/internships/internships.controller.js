@@ -4,9 +4,9 @@
 
     angular.module('afrmApp').controller('InternshipsController', InternshipsController);
 
-    InternshipsController.$inject = [ '$scope', '$mdDialog' ];
+    InternshipsController.$inject = [ '$scope', '$mdDialog', 'internshipsService' ];
 
-    function InternshipsController($scope, $mdDialog) {
+    function InternshipsController($scope, $mdDialog, internshipsService) {
 
         $scope.showDialog = function(internship) {
 
@@ -22,33 +22,24 @@
         };
 
         (function init() {
-            $scope.status = ['Aprovado', 'Em andamento', 'Aguardando aprovação'];
-            $scope.internships = [
-                {
-                    'company': 'HP',
-                    'student': 'Felipe',
-                    'class': 'Ciencia da comp.',
-                    'begin': '10/06/2016',
-                    'end': '10/12/2016',
-                    'status': true
-                },
-                {
-                    'company': 'HP',
-                    'student': 'Felipe',
-                    'class': 'Ciencia da comp.',
-                    'begin': '10/06/2016',
-                    'end': '10/12/2016',
-                    'status': true
-                },
-                {
-                    'company': 'Pling',
-                    'student': 'Teste',
-                    'class': 'Eng da comp.',
-                    'begin': '10/06/2016',
-                    'end': '10/12/2016',
-                    'status': false
-                }
-            ];
+            var credentialId;
+
+            $scope.status = ['Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
+
+            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
+
+            $scope.isStudent = $scope.credential.role === 'student' ? true : false;
+
+            credentialId = $scope.credential.role === 'student' ? $scope.credential._id : null;
+
+            internshipsService.get(credentialId)
+                .success(function(internships) {
+                    $scope.internships = internships;
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
+
         }());
     }
 }());

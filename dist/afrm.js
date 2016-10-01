@@ -43,10 +43,15 @@
     function MainController($scope, $rootScope, $location) {
 
         $rootScope.serverUrl = 'http://localhost:3000/';
+        // $rootScope.serverUrl = 'https://dev-sistemas.herokuapp.com/';
 
         $scope.menu = function(path) {
             $location.path(path);
         };
+
+        // $rootScope.$on('$routeChangeSuccess', function () {
+        //     $rootScope.isLogin = $location.path() === '/login' ? true : false;
+        // });
 
     }
 }());
@@ -170,9 +175,9 @@
 
     angular.module('afrmApp').controller('InternshipsController', InternshipsController);
 
-    InternshipsController.$inject = [ '$scope', '$mdDialog' ];
+    InternshipsController.$inject = [ '$scope', '$mdDialog', 'internshipsService' ];
 
-    function InternshipsController($scope, $mdDialog) {
+    function InternshipsController($scope, $mdDialog, internshipsService) {
 
         $scope.showDialog = function(internship) {
 
@@ -188,33 +193,24 @@
         };
 
         (function init() {
-            $scope.status = ['Aprovado', 'Em andamento', 'Aguardando aprovação'];
-            $scope.internships = [
-                {
-                    'company': 'HP',
-                    'student': 'Felipe',
-                    'class': 'Ciencia da comp.',
-                    'begin': '10/06/2016',
-                    'end': '10/12/2016',
-                    'status': true
-                },
-                {
-                    'company': 'HP',
-                    'student': 'Felipe',
-                    'class': 'Ciencia da comp.',
-                    'begin': '10/06/2016',
-                    'end': '10/12/2016',
-                    'status': true
-                },
-                {
-                    'company': 'Pling',
-                    'student': 'Teste',
-                    'class': 'Eng da comp.',
-                    'begin': '10/06/2016',
-                    'end': '10/12/2016',
-                    'status': false
-                }
-            ];
+            var credentialId;
+
+            $scope.status = ['Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
+
+            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
+
+            $scope.isStudent = $scope.credential.role === 'student' ? true : false;
+
+            credentialId = $scope.credential.role === 'student' ? $scope.credential._id : null;
+
+            internshipsService.get(credentialId)
+                .success(function(internships) {
+                    $scope.internships = internships;
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
+
         }());
     }
 }());
@@ -225,9 +221,9 @@
 
     angular.module('afrmApp').controller('LoginController', LoginController);
 
-    LoginController.$inject = [ '$scope', 'credentialsService' ];
+    LoginController.$inject = [ '$scope', 'credentialsService', '$location' ];
 
-    function LoginController($scope, credentialsService) {
+    function LoginController($scope, credentialsService, $location) {
 
         $scope.login = function(email, pass) {
             var credential = {
@@ -236,9 +232,11 @@
             };
 
             credentialsService.login(credential)
-                .success(function (token) {
-                    if (token)
-                        window.sessionStorage.setItem('TOKEN', token);
+                .success(function (credential) {
+                    if (credential) {
+                        window.localStorage.setItem('CREDENTIAL', JSON.stringify(credential));
+                        $location.path('/estagios');
+                    }
                 })
                 .error(function(reason) {
                     console.log(reason);
@@ -342,7 +340,7 @@
         this.login = function (credential) {
             var querystring = '?email=' + credential.email + '&password=' + credential.password;
 
-            return $http.get($rootScope.serverUrl + module + querystring);
+            return $http.get($rootScope.serverUrl + module + '/' + querystring);
         };
 
         this.create =  function(usr) {
@@ -357,6 +355,29 @@
     CredentialsService.$inject = [ '$http', '$rootScope' ];
 
     angular.module('afrmApp').service('credentialsService', CredentialsService);
+
+}());
+(function () {
+
+    'use strict';
+
+    function InternshipsService($http, $rootScope) {
+
+        var module = 'internships';
+
+        this.get = function (studentId) {
+            var url = $rootScope.serverUrl + module + '/';
+
+            if (studentId)
+                url += studentId;
+
+            return $http.get(url);
+        };
+    }
+
+    InternshipsService.$inject = [ '$http', '$rootScope' ];
+
+    angular.module('afrmApp').service('internshipsService', InternshipsService);
 
 }());
 (function () {

@@ -4,7 +4,7 @@
     <div style="height: 80px; background-color: white !important; box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)">
         
 
-        <md-input-container ng-keypress="search($event)" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
+        <md-input-container ng-if="isStudent" ng-keypress="search($event)" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
             <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_search.svg"></md-icon>
             <input ng-model="tableParams.query" type="text" placeholder="Aluno" />
         </md-input-container>

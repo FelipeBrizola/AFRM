@@ -4,9 +4,9 @@
 
     angular.module('afrmApp').controller('LoginController', LoginController);
 
-    LoginController.$inject = [ '$scope', 'credentialsService' ];
+    LoginController.$inject = [ '$scope', 'credentialsService', '$location' ];
 
-    function LoginController($scope, credentialsService) {
+    function LoginController($scope, credentialsService, $location) {
 
         $scope.login = function(email, pass) {
             var credential = {
@@ -15,9 +15,11 @@
             };
 
             credentialsService.login(credential)
-                .success(function (token) {
-                    if (token)
-                        window.sessionStorage.setItem('TOKEN', token);
+                .success(function (credential) {
+                    if (credential) {
+                        window.localStorage.setItem('CREDENTIAL', JSON.stringify(credential));
+                        $location.path('/estagios');
+                    }
                 })
                 .error(function(reason) {
                     console.log(reason);

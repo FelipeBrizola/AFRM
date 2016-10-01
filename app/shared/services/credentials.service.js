@@ -9,7 +9,7 @@
         this.login = function (credential) {
             var querystring = '?email=' + credential.email + '&password=' + credential.password;
 
-            return $http.get($rootScope.serverUrl + module + querystring);
+            return $http.get($rootScope.serverUrl + module + '/' + querystring);
         };
 
         this.create =  function(usr) {
