@@ -17,12 +17,12 @@
                 'locals': { 'internship': internship || null },
                 'clickOutsideToClose':true
             }).then(function() {
-
+                console.log('ok');
             }, function() {});
         };
 
         (function init() {
-            var credentialId;
+            var query = {};
 
             $scope.status = ['Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
 
@@ -30,9 +30,9 @@
 
             $scope.isStudent = $scope.credential.role === 'student' ? true : false;
 
-            credentialId = $scope.credential.role === 'student' ? $scope.credential._id : null;
+            query = {'credentialId': $scope.credential._id};
 
-            internshipsService.get(credentialId)
+            internshipsService.get(query)
                 .success(function(internships) {
                     $scope.internships = internships;
                 })

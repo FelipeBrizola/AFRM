@@ -15,5 +15,9 @@
         $scope.insertSolicitation = function() {
 
         };
+
+        (function init() {
+        }());
+
     }
 }());

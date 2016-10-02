@@ -19,9 +19,23 @@
             $location.path(path);
         };
 
-        // $rootScope.$on('$routeChangeSuccess', function () {
-        //     $rootScope.isLogin = $location.path() === '/login' ? true : false;
-        // });
+        $rootScope.$on('$routeChangeSuccess', function () {
+
+            if ($location.path() === '/empresas')
+                $scope.currentMenuIndex = 1;
+
+            else if ($location.path() === '/solicitacao')
+                $scope.currentMenuIndex = 0;
+
+            else if ($location.path() === '/estagios')
+                $scope.currentMenuIndex = 2;
+
+            else
+                $scope.currentMenuIndex = -1;
+
+            $rootScope.isLogin = $location.path() === '/login' ? true : false;
+
+        });
 
     }
 }());

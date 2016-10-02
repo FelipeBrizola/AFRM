@@ -29,7 +29,7 @@
         <!-- LAYOUT WRAPPER -->
         <section class="master-content">
 
-            <md-tabs style="min-height: 0 !important; background-color: white">
+            <md-tabs ng-show="currentMenuIndex !== -1" md-selected="currentMenuIndex" style="min-height: 0 !important; background-color: white">
                 
                 <md-tab ng-click="menu('/solicitacao')" label="Solicitações">
            
@@ -38,9 +38,6 @@
                 
                 </md-tab>
                 <md-tab ng-click="menu('/estagios')" label="Estagios">
-            
-                </md-tab>
-                <md-tab ng-click="menu('/empresa')" label="menu 4">
             
                 </md-tab>
    

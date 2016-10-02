@@ -49,9 +49,23 @@
             $location.path(path);
         };
 
-        // $rootScope.$on('$routeChangeSuccess', function () {
-        //     $rootScope.isLogin = $location.path() === '/login' ? true : false;
-        // });
+        $rootScope.$on('$routeChangeSuccess', function () {
+
+            if ($location.path() === '/empresas')
+                $scope.currentMenuIndex = 1;
+
+            else if ($location.path() === '/solicitacao')
+                $scope.currentMenuIndex = 0;
+
+            else if ($location.path() === '/estagios')
+                $scope.currentMenuIndex = 2;
+
+            else
+                $scope.currentMenuIndex = -1;
+
+            $rootScope.isLogin = $location.path() === '/login' ? true : false;
+
+        });
 
     }
 }());
@@ -188,12 +202,12 @@
                 'locals': { 'internship': internship || null },
                 'clickOutsideToClose':true
             }).then(function() {
-
+                console.log('ok');
             }, function() {});
         };
 
         (function init() {
-            var credentialId;
+            var query = {};
 
             $scope.status = ['Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
 
@@ -201,9 +215,9 @@
 
             $scope.isStudent = $scope.credential.role === 'student' ? true : false;
 
-            credentialId = $scope.credential.role === 'student' ? $scope.credential._id : null;
+            query = {'credentialId': $scope.credential._id};
 
-            internshipsService.get(credentialId)
+            internshipsService.get(query)
                 .success(function(internships) {
                     $scope.internships = internships;
                 })
@@ -300,6 +314,10 @@
         $scope.insertSolicitation = function() {
 
         };
+
+        (function init() {
+        }());
+
     }
 }());
 
@@ -365,11 +383,17 @@
 
         var module = 'internships';
 
-        this.get = function (studentId) {
-            var url = $rootScope.serverUrl + module + '/';
+        this.get = function (query) {
+            var url = $rootScope.serverUrl + module + '/?';
 
-            if (studentId)
-                url += studentId;
+            if (query.credentialId)
+                url += 'credentialId=' + query.credentialId;
+
+            if (query.status)
+                url += '&status=' + query.status;
+
+            if (query.name)
+                url += '&name=' + query.name;
 
             return $http.get(url);
         };

@@ -6,11 +6,17 @@
 
         var module = 'internships';
 
-        this.get = function (studentId) {
-            var url = $rootScope.serverUrl + module + '/';
+        this.get = function (query) {
+            var url = $rootScope.serverUrl + module + '/?';
 
-            if (studentId)
-                url += studentId;
+            if (query.credentialId)
+                url += 'credentialId=' + query.credentialId;
+
+            if (query.status)
+                url += '&status=' + query.status;
+
+            if (query.name)
+                url += '&name=' + query.name;
 
             return $http.get(url);
         };
