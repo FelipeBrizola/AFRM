@@ -1,26 +1,25 @@
 <md-content flex="100" style="min-width: 800px; margin: auto; max-width: 93%; margin-top: 50px">
 
     <!-- PESQUISA -->
-    <div style="height: 80px; background-color: white !important; box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)">
+    <div style="padding:10px; height: 80px; background-color: white !important; box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)">
         
 
-        <md-input-container ng-if="!isStudent" ng-keypress="search($event)" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
-            <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_search.svg"></md-icon>
-            <input ng-model="tableParams.query" type="text" placeholder="Aluno" />
+        <md-input-container ng-if="!isStudent" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
+            <input ng-model="query.name" type="text" placeholder="Aluno" />
         </md-input-container>
 
         <div style="display: inline-block; width: 74%;">
 
             <md-input-container style="margin: 0 2%; 0 2%; min-width: 200px;">
             <label>Filtro</label>
-                <md-select ng-model="filter">
+                <md-select ng-model="query.status">
                     <md-option ng-repeat="item in status" >
                     {{item}}
                     </md-option>
                 </md-select>
             </md-input-container>
 
-            <md-button style="margin-bottom: 22px;" ng-click="search()" class="md-raised md-primary no-ripple">Pesquisar</md-button>
+            <md-button style="margin-bottom: 22px;" ng-click="search(query)" class="md-raised md-primary no-ripple">Pesquisar</md-button>
                     
         </div>
         

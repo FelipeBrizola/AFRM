@@ -206,10 +206,30 @@
             }, function() {});
         };
 
+        $scope.search = function(query) {
+            var q = {'credentialId': $scope.credential._id};
+
+            if (query.name)
+                q.name = query.name.trim();
+
+            if (query.status && query.status.trim() !== 'Todos')
+                q.status = query.status.trim();
+
+            internshipsService.get(q)
+                .success(function(internships) {
+                    $scope.internships = internships;
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                });
+        };
+
         (function init() {
             var query = {};
 
-            $scope.status = ['Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
+            $scope.query = {};
+
+            $scope.status = ['Todos', 'Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
 
             $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
 
