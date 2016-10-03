@@ -42,8 +42,8 @@
     // Main Controller
     function MainController($scope, $rootScope, $location) {
 
-        $rootScope.serverUrl = 'http://localhost:3000/';
-        // $rootScope.serverUrl = 'https://dev-sistemas.herokuapp.com/';
+        // $rootScope.serverUrl = 'http://localhost:3000/';
+        $rootScope.serverUrl = 'https://dev-sistemas.herokuapp.com/';
 
         $scope.menu = function(path) {
             $location.path(path);
@@ -52,7 +52,7 @@
         $rootScope.$on('$routeChangeSuccess', function () {
 
             if ($location.path() === '/empresas')
-                $scope.currentMenuIndex = 1;
+                $scope.currentMenuIndex =1;
 
             else if ($location.path() === '/solicitacao')
                 $scope.currentMenuIndex = 0;

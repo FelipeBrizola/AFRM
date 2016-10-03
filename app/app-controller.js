@@ -22,7 +22,7 @@
         $rootScope.$on('$routeChangeSuccess', function () {
 
             if ($location.path() === '/empresas')
-                $scope.currentMenuIndex = 1;
+                $scope.currentMenuIndex =1;
 
             else if ($location.path() === '/solicitacao')
                 $scope.currentMenuIndex = 0;
