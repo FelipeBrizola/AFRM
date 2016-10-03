@@ -6,11 +6,6 @@
     function ApplicationConfig($routeProvider, $locationProvider) {
         $routeProvider
 
-            .when('/', {
-                'templateUrl' : 'app/components/home/home.html',
-                'controller'  : 'HomeController'
-            })
-
             .when('/login', {
                 'templateUrl' : 'app/components/login/login.html',
                 'controller'  : 'LoginController'
@@ -37,7 +32,7 @@
             })
 
             .otherwise({
-                'redirectTo': '/'
+                'redirectTo': '/login'
             });
 
         $locationProvider.html5Mode(true);
