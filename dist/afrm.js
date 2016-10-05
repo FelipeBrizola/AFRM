@@ -43,7 +43,7 @@
     function MainController($scope, $rootScope, $location) {
 
         // $rootScope.serverUrl = 'http://localhost:3000/';
-        $rootScope.serverUrl = 'https://dev-sistemas.herokuapp.com/';
+        $rootScope.serverUrl = 'https://dev-sistemas-server.herokuapp.com/';
 
         $scope.menu = function(path) {
             $location.path(path);
