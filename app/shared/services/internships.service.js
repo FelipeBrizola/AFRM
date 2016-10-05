@@ -20,6 +20,11 @@
 
             return $http.get(url);
         };
+
+        this.update = function (internship) {
+            return $http.put($rootScope.serverUrl + module, internship);
+        };
+
     }
 
     InternshipsService.$inject = [ '$http', '$rootScope' ];

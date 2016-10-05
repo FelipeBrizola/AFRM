@@ -8,17 +8,15 @@
 
     function InternshipsController($scope, $mdDialog, internshipsService) {
 
-        $scope.showDialog = function(internship) {
-
-            $mdDialog.show({
-                'controller': 'InternshipDialogController',
-                'templateUrl': 'app/shared/templates/modals/internship-dialog.html',
-                'parent': angular.element(document.body),
-                'locals': { 'internship': internship || null },
-                'clickOutsideToClose':true
-            }).then(function() {
-                console.log('ok');
-            }, function() {});
+        $scope.showDialog = function(internship, credential) {
+            if (internship.status === 'Aguardando aprovação' && ($scope.credential.role === 'coordinator' || $scope.credential.role === 'student'))
+                $mdDialog.show({
+                    'controller'          : 'InternshipDialogController',
+                    'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
+                    'parent'              : angular.element(document.body),
+                    'locals'              : { 'internship': internship || {}, 'credential': credential },
+                    'clickOutsideToClose' : true
+                });
         };
 
         $scope.search = function(query) {
@@ -44,7 +42,7 @@
 
             $scope.query = {};
 
-            $scope.status = ['Todos', 'Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
+            $scope.status = ['Todos', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação', 'Finalizado'];
 
             $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
 

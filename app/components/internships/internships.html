@@ -48,7 +48,7 @@
                     </tr>
                     </thead>
                 <tbody md-body>
-                <tr md-row md-select="company" ng-repeat="internship in internships track by $index" ng-click="showDialog(internship)" style="cursor: pointer">
+                <tr md-row md-select="company" ng-repeat="internship in internships track by $index" ng-click="showDialog(internship, credential)" style="cursor: pointer">
                     <td md-cell>{{internship.company.name}}</td>
                     <td md-cell>{{internship.student.name}}</td>
                     <td md-cell>{{internship.class.name}}</td>

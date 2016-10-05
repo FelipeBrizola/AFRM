@@ -188,17 +188,15 @@
 
     function InternshipsController($scope, $mdDialog, internshipsService) {
 
-        $scope.showDialog = function(internship) {
-
-            $mdDialog.show({
-                'controller': 'InternshipDialogController',
-                'templateUrl': 'app/shared/templates/modals/internship-dialog.html',
-                'parent': angular.element(document.body),
-                'locals': { 'internship': internship || null },
-                'clickOutsideToClose':true
-            }).then(function() {
-                console.log('ok');
-            }, function() {});
+        $scope.showDialog = function(internship, credential) {
+            if (internship.status === 'Aguardando aprovação' && ($scope.credential.role === 'coordinator' || $scope.credential.role === 'student'))
+                $mdDialog.show({
+                    'controller'          : 'InternshipDialogController',
+                    'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
+                    'parent'              : angular.element(document.body),
+                    'locals'              : { 'internship': internship || {}, 'credential': credential },
+                    'clickOutsideToClose' : true
+                });
         };
 
         $scope.search = function(query) {
@@ -224,7 +222,7 @@
 
             $scope.query = {};
 
-            $scope.status = ['Todos', 'Aprovado', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação'];
+            $scope.status = ['Todos', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação', 'Finalizado'];
 
             $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
 
@@ -412,6 +410,11 @@
 
             return $http.get(url);
         };
+
+        this.update = function (internship) {
+            return $http.put($rootScope.serverUrl + module, internship);
+        };
+
     }
 
     InternshipsService.$inject = [ '$http', '$rootScope' ];
@@ -423,18 +426,50 @@
 
     'use strict';
 
-    function InternshipDialogController($scope, $mdDialog, locals) {
+    function InternshipDialogController($scope, $mdDialog, internshipsService, locals) {
 
-        $scope.save = function(internship) {
-            return internship;
+        function updateInternship() {
+            $scope.isSaving = true;
+
+            internshipsService.update($scope.internship)
+                .success(function() {
+                    $scope.isSaving = false;
+                    $mdDialog.hide($scope.internship);
+                })
+                .error(function(reason) {
+                    console.log(reason);
+                    $scope.isSaving = false;
+                    $mdDialog.hide();
+                });
+        }
+
+        $scope.save = function(isApprove) {
+
+            if (isApprove && $scope.credential.role === 'coordinator') {
+                $scope.internship.status = 'Em andamento';
+                $scope.internship.begin  = moment().format('DD/MM/YYYY');
+                $scope.internship.end    = moment(moment()).add(6, 'months').format('DD/MM/YYYY');
+            }
+            else if (!isApprove && $scope.credential.role === 'coordinator')
+                $scope.internship.status = 'Reprovado';
+
+            else if (!isApprove && $scope.credential.role === 'student')
+                $scope.internship.status = 'Cancelado';
+
+            updateInternship();
+        };
+
+        $scope.closeDialog = function() {
+            $mdDialog.cancel();
         };
 
         (function init() {
             $scope.internship = locals.internship || {};
+            $scope.credential = locals.credential || {};
         })();
     }
 
-    InternshipDialogController.$inject = [ '$scope', '$mdDialog', 'locals' ];
+    InternshipDialogController.$inject = [ '$scope', '$mdDialog', 'internshipsService', 'locals' ];
 
     angular.module('afrmApp').controller('InternshipDialogController', InternshipDialogController);
 
