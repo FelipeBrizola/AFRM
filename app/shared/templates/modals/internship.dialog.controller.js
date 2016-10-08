@@ -13,7 +13,7 @@
                     $mdDialog.hide($scope.internship);
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                     $scope.isSaving = false;
                     $mdDialog.hide();
                 });

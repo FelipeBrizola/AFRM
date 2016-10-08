@@ -33,7 +33,7 @@
                     $scope.internships = internships;
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
         };
 
@@ -55,7 +55,7 @@
                     $scope.internships = internships;
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
 
         }());

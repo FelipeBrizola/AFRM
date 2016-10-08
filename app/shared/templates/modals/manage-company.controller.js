@@ -19,7 +19,7 @@
                     })
                     .error(function (reason) {
                         $scope.isLoadingCompany = false;
-                        console.log(reason);
+                        console.log(reason); // eslint-disable-line no-console
                     });
             }
 
@@ -33,7 +33,7 @@
                     })
                     .error(function (reason) {
                         $scope.isLoadingCompany = false;
-                        console.log(reason);
+                        console.log(reason); // eslint-disable-line no-console
                     });
             }
         };

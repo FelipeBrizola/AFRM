@@ -22,12 +22,12 @@
                     }
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
         };
 
         (function init() {
-            console.log('logincontroller');
+            console.log('logincontroller'); // eslint-disable-line no-console
         }());
     }
 }());
