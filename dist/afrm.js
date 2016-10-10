@@ -111,6 +111,22 @@
     }
 }());
 (function() {
+  'use strict';
+
+  // Creating the module and factory we referenced in the beforeEach blocks in our test file
+  angular.module('afrmApp')
+  .factory('Users', function() {
+    var Users = {};
+
+    // Defining all to make our test pass. It doesn't need to do anything yet.
+    Users.all = function() {
+
+    };
+
+    return Users;
+  });
+})();
+(function() {
 
     'use strict';
 
@@ -152,7 +168,7 @@
                     $scope.companies = companies;
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
         }());
     }
@@ -213,7 +229,7 @@
                     $scope.internships = internships;
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
         };
 
@@ -235,7 +251,7 @@
                     $scope.internships = internships;
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
 
         }());
@@ -266,16 +282,50 @@
                     }
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
         };
 
         (function init() {
-            console.log('logincontroller');
+            console.log('logincontroller'); // eslint-disable-line no-console
         }());
     }
 }());
 
+// describe('Controller: LoginController', function () {
+//     var MyController, scope;
+//     // load the controller's module
+//     beforeEach(function(){
+//         module('afrmApp');
+//         inject(function ($controller, $rootScope) {
+//             scope = $rootScope.$new();
+//             MyController = $controller('LoginController', {
+//                 $scope:scope
+//             });
+//         });
+//     });
+
+//     it('should do something', function () {
+//         expect(5).toBe(5);
+//     });
+// }); 
+
+describe('Users factory', function() {
+  var Users;
+
+  // Before each test load our api.users module
+  beforeEach(angular.mock.module('afrmApp'));
+
+  // Before each test set our injected Users factory (_Users_) to our local Users variable
+  beforeEach(inject(function(_Users_) {
+    Users = _Users_;
+  }));
+
+  // A simple test to verify the Users factory exists
+  it('should exist', function() {
+    expect(Users).toBeDefined();
+  });
+});
 (function() {
 
     'use strict';
@@ -303,7 +353,7 @@
 
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                 });
         };
 
@@ -437,7 +487,7 @@
                     $mdDialog.hide($scope.internship);
                 })
                 .error(function(reason) {
-                    console.log(reason);
+                    console.log(reason); // eslint-disable-line no-console
                     $scope.isSaving = false;
                     $mdDialog.hide();
                 });
@@ -495,7 +545,7 @@
                     })
                     .error(function (reason) {
                         $scope.isLoadingCompany = false;
-                        console.log(reason);
+                        console.log(reason); // eslint-disable-line no-console
                     });
             }
 
@@ -509,7 +559,7 @@
                     })
                     .error(function (reason) {
                         $scope.isLoadingCompany = false;
-                        console.log(reason);
+                        console.log(reason); // eslint-disable-line no-console
                     });
             }
         };
