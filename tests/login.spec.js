@@ -26,7 +26,7 @@ describe('LoginController', function() {
             expect(login.fn).toHaveBeenCalled();
         });
 
-        it('creentialsService have been called', function() {
+        it('creentialsService to be defined', function() {
             expect(credentialsService.login).toBeDefined();
         });
 

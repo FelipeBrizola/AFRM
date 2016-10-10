@@ -1,5 +1,7 @@
 describe('InternshipsController', function() {
-    var $controller, internshipsService;
+    var $controller, internshipsService, modal,
+        internship = {'status': 'Aguardando aprovação'};
+        credential = {'role': 'student'};
 
     beforeEach(module('afrmApp'));
 
@@ -8,33 +10,33 @@ describe('InternshipsController', function() {
 
         $controller        = _$controller_;
         internshipsService = _internshipsService_;
+
 		controller         = $controller('InternshipsController', { $scope: $scope });
 
         internships = {
-            'fn': $scope.search
+            'fnSearch'     : $scope.search,
+            'fnShowDialog' : $scope.showDialog,
         };
 
-        spyOn(internships, 'fn');
+        spyOn(internships, 'fnSearch');
+        spyOn(internships, 'fnShowDialog').and.callThrough();
 
-        internships.fn('query');
+        internships.fnSearch('query');
+        internships.fnShowDialog(internship, credential);
 
     }));
 
     describe('search internships', function () {
-
         it('search internships have been called', function() {
-            expect(internships.fn).toHaveBeenCalled();
+            expect(internships.fnSearch).toHaveBeenCalled();
         });
-
-        it('internshipsService have been called', function() {
+        it('internshipsService to be defined', function() {
             expect(internshipsService.get).toBeDefined();
         });
-
     });
 
     describe('dialog internships', function () {
-
-        it('show dialog', function () {
+        it('show dialog have been called', function () {
 
         });
     });

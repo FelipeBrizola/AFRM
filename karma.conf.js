@@ -30,11 +30,11 @@ module.exports = function(config) {
 
       './app/shared/services/credentials.service.js',
       './app/components/login/login.controller.js',
-      './app/components/login/login.spec.js',
+      './tests/login.spec.js',
 
       './app/shared/services/internships.service.js',
       './app/components/internships/internships.controller.js',
-      './app/components/internships/internships.spec.js'
+      './tests/internships.spec.js'
 
     ],
 
