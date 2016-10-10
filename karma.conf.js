@@ -27,10 +27,14 @@ module.exports = function(config) {
       './vendor/angular-filter/dist/angular-filter.js',
 
       './app/app-module.js',
-      './app/shared/users.js',
+
       './app/shared/services/credentials.service.js',
       './app/components/login/login.controller.js',
-      './app/components/login/login.spec.js'
+      './app/components/login/login.spec.js',
+
+      './app/shared/services/internships.service.js',
+      './app/components/internships/internships.controller.js',
+      './app/components/internships/internships.spec.js'
 
     ],
 

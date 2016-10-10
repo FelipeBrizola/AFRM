@@ -27,7 +27,7 @@
         };
 
         (function init() {
-            console.log('logincontroller'); // eslint-disable-line no-console
+
         }());
     }
 }());

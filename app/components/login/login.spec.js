@@ -1,7 +1,7 @@
 describe('LoginController', function() {
     var $controller, credentialsService;
 
-    beforeEach(module('afrmApp')); //<--- Hook module
+    beforeEach(module('afrmApp'));
 
     beforeEach(inject(function (_$controller_, _credentialsService_) {
         var $scope = {}, controller;
@@ -14,15 +14,20 @@ describe('LoginController', function() {
             'fn': $scope.login
         };
 
-        spyOn(login, 'fn');
+        spyOn(login, 'fn').and.callThrough();
 
         login.fn('username', 'pass');
 
     }));
 
     describe('login', function () {
-        it('have been called', function() {
+
+        it('login have been called', function() {
             expect(login.fn).toHaveBeenCalled();
+        });
+
+        it('creentialsService have been called', function() {
+            expect(credentialsService.login).toBeDefined();
         });
 
     });

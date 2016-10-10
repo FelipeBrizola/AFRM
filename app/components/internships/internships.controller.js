@@ -44,7 +44,7 @@
 
             $scope.status = ['Todos', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação', 'Finalizado'];
 
-            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
+            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL')) || {};
 
             $scope.isStudent = $scope.credential.role === 'student' ? true : false;
 
