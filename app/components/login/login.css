@@ -135,3 +135,7 @@ input {
   width: 90%;
 }
 
+
+.icon > svg {
+  fill: grey;
+}

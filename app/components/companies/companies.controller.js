@@ -8,40 +8,37 @@
 
     function CompaniesController($scope, $mdDialog, companiesService) {
 
-        // cria ou edita company
-        $scope.showDialog = function(company) {
+        function getCompanies(name) {
 
-            $mdDialog.show({
-                'controller': 'ManageCompanyController',
-                'templateUrl': 'app/shared/templates/modals/manage-company.html',
-                'parent': angular.element(document.body),
-                'locals': { 'company': company || null },
-                'clickOutsideToClose':true
-            }).then(function(company, isNewCompany) {
-                if (company) {
-                    if (isNewCompany)
-                        $scope.companies.push(company);
-                    else {
-                        $scope.companies.forEach(function(comp) {
-                            if (comp._id === company._id)
-                                comp =  company;
-                        });
-                    }
-
-                }
-
-            }, function() {});
-        };
-
-        (function init() {
-
-            companiesService.get()
+            companiesService.get(name)
                 .success(function(companies) {
                     $scope.companies = companies;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
                 });
+        }
+
+        $scope.showDialog = function(company) {
+
+            if (company.status === 'Aguardando aprovação')
+                $mdDialog.show({
+                    'controller'          : 'ManageCompanyController',
+                    'templateUrl'         : 'app/shared/templates/modals/company-dialog.html',
+                    'parent'              : angular.element(document.body),
+                    'locals'              : { 'company': company },
+                    'clickOutsideToClose' : true
+                });
+        };
+
+        $scope.search = function (name) {
+            getCompanies(name);
+        };
+
+        (function init() {
+
+            $scope.companySelected = [];
+            getCompanies();
         }());
     }
 }());

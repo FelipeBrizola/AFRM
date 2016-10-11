@@ -4,17 +4,13 @@
     <div style="height: 80px; background-color: white !important; box-shadow:0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)">
         
 
-        <md-input-container ng-keypress="search($event)" style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
+        <md-input-container style="margin-bottom: 0; margin-right: 2%; margin-left:3%; width:20%">
             <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_search.svg"></md-icon>
             <input ng-model="tableParams.query" type="text" placeholder="Pesquisar" />
         </md-input-container>
 
         <div style="display: inline-block; width: 74%;">
-            <md-button style="margin-bottom: 22px;" ng-click="search()" class="md-raised md-primary no-ripple">Pesquisar</md-button>
-
-            <md-button style="float: right; clear: right" class="md-raised md-primary no-ripple" ng-click="showDialog()">
-                <md-icon class="icon" md-svg-icon="../../../assets/icons/icon_add.svg"></md-icon>
-            </md-button>
+            <md-button style="margin-bottom: 22px;" ng-click="search(tableParams.query)" class="md-raised md-primary no-ripple">Pesquisar</md-button>
         </div>
         
     </div>
@@ -23,13 +19,14 @@
     <md-card style="margin: auto; margin-top: 12px;">
 
         <md-table-container>
-            <table md-table md-row-select ng-model="companySelected">
+            <table md-table>
                 <thead md-head md-order="tableParams.sort" md-on-reorder="reorderTable">
                     <tr md-row>
                         <th md-column md-order-by="name">Nome</th>
                         <th md-column md-order-by="cnpj">CNPJ</th>
                         <th md-column md-order-by="email">Email</th>
                         <th md-column md-order-by="phone">Telefone</th>
+                        <th md-column md-order-by="status">Status</th>
                     </tr>
                 </thead>
                 <thead>
@@ -45,6 +42,7 @@
                     <td md-cell>{{company.cnpj}}</td>
                     <td md-cell>{{company.email}}</td>
                     <td md-cell>{{company.phone}}</td>
+                    <td md-cell>{{company.status}}</td>
                 </tr>
                 </tbody>
             </table>

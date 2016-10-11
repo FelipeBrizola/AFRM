@@ -14,8 +14,13 @@
             return $http.put($rootScope.serverUrl + module, company);
         };
 
-        this.get = function () {
-            return $http.get($rootScope.serverUrl + module);
+        this.get = function (name) {
+            var url = $rootScope.serverUrl + module;
+
+            if (name)
+                url = url + '/' + name;
+
+            return $http.get(url);
         };
     }
 

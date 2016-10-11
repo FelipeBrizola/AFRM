@@ -19,6 +19,11 @@
             $location.path(path);
         };
 
+        $scope.logout =  function () {
+            window.localStorage.removeItem('CREDENTIAL');
+            $location.path('/login');
+        };
+
         $rootScope.$on('$routeChangeSuccess', function () {
 
             if ($location.path() === '/empresas')

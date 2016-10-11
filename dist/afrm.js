@@ -49,6 +49,11 @@
             $location.path(path);
         };
 
+        $scope.logout =  function () {
+            window.localStorage.removeItem('CREDENTIAL');
+            $location.path('/login');
+        };
+
         $rootScope.$on('$routeChangeSuccess', function () {
 
             if ($location.path() === '/empresas')
@@ -111,22 +116,6 @@
     }
 }());
 (function() {
-  'use strict';
-
-  // Creating the module and factory we referenced in the beforeEach blocks in our test file
-  angular.module('afrmApp')
-  .factory('Users', function() {
-    var Users = {};
-
-    // Defining all to make our test pass. It doesn't need to do anything yet.
-    Users.all = function() {
-
-    };
-
-    return Users;
-  });
-})();
-(function() {
 
     'use strict';
 
@@ -136,40 +125,37 @@
 
     function CompaniesController($scope, $mdDialog, companiesService) {
 
-        // cria ou edita company
-        $scope.showDialog = function(company) {
+        function getCompanies(name) {
 
-            $mdDialog.show({
-                'controller': 'ManageCompanyController',
-                'templateUrl': 'app/shared/templates/modals/manage-company.html',
-                'parent': angular.element(document.body),
-                'locals': { 'company': company || null },
-                'clickOutsideToClose':true
-            }).then(function(company, isNewCompany) {
-                if (company) {
-                    if (isNewCompany)
-                        $scope.companies.push(company);
-                    else {
-                        $scope.companies.forEach(function(comp) {
-                            if (comp._id === company._id)
-                                comp =  company;
-                        });
-                    }
-
-                }
-
-            }, function() {});
-        };
-
-        (function init() {
-
-            companiesService.get()
+            companiesService.get(name)
                 .success(function(companies) {
                     $scope.companies = companies;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
                 });
+        }
+
+        $scope.showDialog = function(company) {
+
+            if (company.status === 'Aguardando aprovação')
+                $mdDialog.show({
+                    'controller'          : 'ManageCompanyController',
+                    'templateUrl'         : 'app/shared/templates/modals/company-dialog.html',
+                    'parent'              : angular.element(document.body),
+                    'locals'              : { 'company': company },
+                    'clickOutsideToClose' : true
+                });
+        };
+
+        $scope.search = function (name) {
+            getCompanies(name);
+        };
+
+        (function init() {
+
+            $scope.companySelected = [];
+            getCompanies();
         }());
     }
 }());
@@ -240,7 +226,7 @@
 
             $scope.status = ['Todos', 'Em andamento', 'Reprovado', 'Cancelado', 'Aguardando aprovação', 'Finalizado'];
 
-            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
+            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL')) || {};
 
             $scope.isStudent = $scope.credential.role === 'student' ? true : false;
 
@@ -264,9 +250,9 @@
 
     angular.module('afrmApp').controller('LoginController', LoginController);
 
-    LoginController.$inject = [ '$scope', 'credentialsService', '$location' ];
+    LoginController.$inject = [ '$scope', 'credentialsService', '$location', '$rootScope' ];
 
-    function LoginController($scope, credentialsService, $location) {
+    function LoginController($scope, credentialsService, $location, $rootScope) {
 
         $scope.login = function(email, pass) {
             var credential = {
@@ -278,8 +264,11 @@
                 .success(function (credential) {
                     if (credential) {
                         window.localStorage.setItem('CREDENTIAL', JSON.stringify(credential));
+                        $rootScope.credential = credential;
                         $location.path('/estagios');
                     }
+                    else
+                        $scope.isWrongLogin = true;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
@@ -287,45 +276,11 @@
         };
 
         (function init() {
-            console.log('logincontroller'); // eslint-disable-line no-console
+
         }());
     }
 }());
 
-// describe('Controller: LoginController', function () {
-//     var MyController, scope;
-//     // load the controller's module
-//     beforeEach(function(){
-//         module('afrmApp');
-//         inject(function ($controller, $rootScope) {
-//             scope = $rootScope.$new();
-//             MyController = $controller('LoginController', {
-//                 $scope:scope
-//             });
-//         });
-//     });
-
-//     it('should do something', function () {
-//         expect(5).toBe(5);
-//     });
-// }); 
-
-describe('Users factory', function() {
-  var Users;
-
-  // Before each test load our api.users module
-  beforeEach(angular.mock.module('afrmApp'));
-
-  // Before each test set our injected Users factory (_Users_) to our local Users variable
-  beforeEach(inject(function(_Users_) {
-    Users = _Users_;
-  }));
-
-  // A simple test to verify the Users factory exists
-  it('should exist', function() {
-    expect(Users).toBeDefined();
-  });
-});
 (function() {
 
     'use strict';
@@ -400,8 +355,13 @@ describe('Users factory', function() {
             return $http.put($rootScope.serverUrl + module, company);
         };
 
-        this.get = function () {
-            return $http.get($rootScope.serverUrl + module);
+        this.get = function (name) {
+            var url = $rootScope.serverUrl + module;
+
+            if (name)
+                url = url + '/' + name;
+
+            return $http.get(url);
         };
     }
 
@@ -476,6 +436,48 @@ describe('Users factory', function() {
 
     'use strict';
 
+    function ManageCompanyController($scope, $mdDialog, companiesService, locals) {
+
+        $scope.save = function(company, status) {
+
+            $scope.isLoadingCompany = true;
+
+            if (status === true)
+                company.status = 'Aprovado';
+            else
+                company.status = 'Reprovado';
+
+
+            companiesService.update(company)
+                .success(function () {
+                    $scope.isLoadingCompany = false;
+                    $mdDialog.hide(company);
+                })
+                .error(function (reason) {
+                    $scope.isLoadingCompany = false;
+                    console.log(reason); // eslint-disable-line no-console
+                });
+
+        };
+
+        $scope.closeDialog = function() {
+            $mdDialog.cancel();
+        };
+
+        (function init() {
+            $scope.company = locals.company || {};
+        })();
+    }
+
+    ManageCompanyController.$inject = [ '$scope', '$mdDialog', 'companiesService', 'locals' ];
+
+    angular.module('afrmApp').controller('ManageCompanyController', ManageCompanyController);
+
+}());
+(function () {
+
+    'use strict';
+
     function InternshipDialogController($scope, $mdDialog, internshipsService, locals) {
 
         function updateInternship() {
@@ -522,61 +524,5 @@ describe('Users factory', function() {
     InternshipDialogController.$inject = [ '$scope', '$mdDialog', 'internshipsService', 'locals' ];
 
     angular.module('afrmApp').controller('InternshipDialogController', InternshipDialogController);
-
-}());
-(function () {
-
-    'use strict';
-
-    function ManageCompanyController($scope, $mdDialog, companiesService, locals) {
-
-        $scope.save = function(company) {
-            var isNewCompany;
-
-            $scope.isLoadingCompany = true;
-
-            // put
-            if ($scope.isEditing) {
-                isNewCompany = false;
-                companiesService.update(company)
-                    .success(function (companyEdited) {
-                        $scope.isLoadingCompany = false;
-                        $mdDialog.hide(companyEdited, isNewCompany);
-                    })
-                    .error(function (reason) {
-                        $scope.isLoadingCompany = false;
-                        console.log(reason); // eslint-disable-line no-console
-                    });
-            }
-
-            // post
-            else {
-                isNewCompany = true;
-                companiesService.create(company)
-                    .success(function (newCompany) {
-                        $scope.isLoadingCompany = false;
-                        $mdDialog.hide(newCompany, isNewCompany);
-                    })
-                    .error(function (reason) {
-                        $scope.isLoadingCompany = false;
-                        console.log(reason); // eslint-disable-line no-console
-                    });
-            }
-        };
-
-        (function init() {
-
-            // edita ou cria empresa
-            if (locals.company)
-                $scope.isEditing = true;
-
-            $scope.company = locals.company || {};
-
-        })();
-    }
-
-    ManageCompanyController.$inject = [ '$scope', '$mdDialog', 'companiesService', 'locals' ];
-
-    angular.module('afrmApp').controller('ManageCompanyController', ManageCompanyController);
 
 }());

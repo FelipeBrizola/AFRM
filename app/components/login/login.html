@@ -1,20 +1,33 @@
-<div class="align container">
-  <div class="site__container">
-    <div class="grid__container">
-      <form action="" method="post" class="form form--login">
-        <div class="form__field">
-          <label class="fontawesome-user" for="login__username"><span class="hidden">Email</span></label>
-          <input ng-model="email" id="login__username" type="text" class="form__input" placeholder="Email" required>
-        </div>
-        <div class="form__field">
-          <label class="fontawesome-lock" for="login__password"><span class="hidden">Senha</span></label>
-          <input ng-model="password" id="login__password" type="password" class="form__input" placeholder="Senha" required>
-        </div>
-        <div ng-click="login(email, password)" class="form__field">
-          <input style="text-align: center; cursor: pointer" type="afrm-submit" value="Entrar">
-        </div>
-      </form>
-      <p class="text--center">Ainda não é cadastrado? <a href="/register">Cadastre-se agora</a> <span class="fontawesome-arrow-right"></span></p>
+<div layout="column" flex="50" style="margin: auto" layout-padding ng-cloak>
+	<md-content style="color:grey; padding:20px; border-radius: 5px;" class="md-no-momentum">
+
+		<h2 style="text-align:center">AFRM - SISTEMAS</h2>
+
+    	<md-input-container class="md-icon-float md-block">
+        <label>Email</label>
+        <md-icon class="icon" md-svg-src="../../../assets/icons/icon_email.svg"></md-icon>
+        <input ng-model="email" type="text">
+    	</md-input-container>
+
+		<md-input-container style="margin-bottom:0" class="md-icon-float md-block">
+			<label>Senha</label>
+			<md-icon class="icon" md-svg-src="../../../assets/icons/icon_lock.svg"></md-icon>
+			<input type="password" ng-model="password" type="text"x>
+    </md-input-container>
+
+    <div style="width: 100%; height:20px; text-align: center;">
+      <span ng-show="isWrongLogin" style="color: #d44179; ;margin-bottom: 30px; font-size: 13px;">Email ou senha incorretos</span>
     </div>
-  </div>
+
+		<md-button style="width: 100%; background-color: #d44179; margin: 0; color: white;"	 ng-click="login(email, password)">
+			Entrar
+		</md-button>
+
+    <div style="font-size: 13px; text-align: center; margin-top: 20px;">
+      <span>Ainda nao é cadastrado?
+        <a href="/registro">Cadastre-se agora</a>
+      </span>
+    </div>
+
+    <md-content>
 </div>

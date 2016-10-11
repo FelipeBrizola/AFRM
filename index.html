@@ -34,7 +34,7 @@
                 <md-tab ng-click="menu('/solicitacao')" label="Solicitações">
            
                 </md-tab>
-                <md-tab ng-click="menu('/empresas')" label="Empresas">
+                <md-tab ng-if="credential.role !== 'student'" ng-click="menu('/empresas')" label="Empresas">
                 
                 </md-tab>
                 <md-tab ng-click="menu('/estagios')" label="Estagios">
@@ -42,6 +42,13 @@
                 </md-tab>
    
             </md-tabs>
+            
+            <md-icon ng-click="logout()" style="cursor: pointer ;position: absolute; margin-top: -36px; right: 0;" class="icon" md-svg-src="../../../assets/icons/icon_exit.svg">
+            <md-tooltip md-direction="left">
+                Sair
+            </md-tooltip>
+            </md-icon>
+            
 
             <!-- DYNAMIC CONTENT -->
             <div class="dynamic-content">
