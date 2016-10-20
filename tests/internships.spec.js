@@ -15,7 +15,7 @@ describe('InternshipsController', function() {
 
         internships = {
             'fnSearch'     : $scope.search,
-            'fnShowDialog' : $scope.showDialog,
+            'fnShowDialog' : $scope.approveInternshipDialog,
         };
 
         spyOn(internships, 'fnSearch');
