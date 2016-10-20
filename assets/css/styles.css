@@ -10,3 +10,20 @@ body {
     height   : 100%;
     overflow : auto;
 }
+
+.icon-close > svg {
+    fill: white;
+}
+
+.icon > svg {
+  fill: grey;
+}
+
+a {
+  color: #ea4c88;
+  outline: 0;
+  text-decoration: none;
+}
+a:focus, a:hover {
+  text-decoration: underline;
+}

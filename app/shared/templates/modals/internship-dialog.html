@@ -1,29 +1,81 @@
  <md-progress-linear ng-show="isSaving" md-mode="indeterminate"></md-progress-linear>
 
- <!-- Coordenador aprovando ou nao solicitacao de estagio -->
- <md-content ng-show="credential.role === 'coordinator' " layout-padding>
 
-    <h2 style="color: gray">Aprovar estágio?</h2>
- 
-    <div>
-        <md-button ng-click="save(true)" type="submit" class="md-primary md-raised">Sim</md-button>
-    
-        <md-button ng-click="save(false)" type="submit" class="md-primary md-raised">Nao</md-button>
-    
-        <md-button ng-click="closeDialog()" type="submit" class="md-primary md-raised">Fechar</md-button>
-    </div>
- 
-</md-content>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>solicitação de empresa</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="closeDialog()">
+                <md-icon md-svg-src="../../../../assets/icons/icon_close.svg" aria-label="Close dialog" class="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
 
-<!-- Estudante cancelando solicitacao de estagio -->
-<md-content ng-show="credential.role === 'student' " layout-padding>
 
-    <h2 style="color: gray">Cancelar solicitação de estágio?</h2>
- 
-    <div>
-        <md-button ng-click="save(false)" type="submit" class="md-primary md-raised">Sim</md-button>
+    <md-content layout-padding>
     
-        <md-button ng-click="closeDialog()" type="submit" class="md-primary md-raised">Fechar</md-button>
-    </div>
- 
-</md-content>
+        <div layout="row">
+            <md-input-container flex="50">
+                <label>Código de estágio</label>
+                <input ng-disabled="true" type="text" ng-model="internship._id">
+            </md-input-container>
+
+            <div flex="10"></div>
+
+            <md-input-container flex="50">
+                <label>Empresa</label>
+                <input ng-disabled="true" type="text" ng-model="internship.company.name">
+            </md-input-container>
+
+            <div flex="10"></div>
+
+            <md-input-container flex="50">
+                <label>Aluno</label>
+                <input ng-disabled="true" type="text" ng-model="internship.student.name">
+            </md-input-container>
+        </div>
+
+        <div layout="row">
+            <md-input-container flex="50">
+                <label>Curso</label>
+                <input ng-disabled="true" type="text" ng-model="internship.class.name">
+            </md-input-container>
+
+            <div flex="10"></div>
+
+            <md-input-container flex="50">
+                <label>Começo</label>
+                <input ng-disabled="true" type="text" ng-model="internship.begin">
+            </md-input-container>
+
+            <div flex="10"></div>
+
+            <md-input-container flex="50">
+                <label>Termino</label>
+                <input ng-disabled="true" type="text" ng-model="internship.end">
+            </md-input-container>
+        </div>
+
+        <div layout="row">
+            <md-input-container flex="50">
+                <label>Status</label>
+                <input ng-disabled="true" type="text" ng-model="internship.status">
+            </md-input-container>
+
+            <div flex="10"></div>
+
+            <md-input-container flex="50">
+                <label>Responsável</label>
+                <input ng-disabled="true" type="text" ng-model="internship.company.responsable.name">
+            </md-input-container>
+
+            <div flex="10"></div>
+
+            <md-input-container flex="50">
+                <label>Email Responsável</label>
+                <input ng-disabled="true" type="text" ng-model="internship.company.responsable.email">
+            </md-input-container>
+        </div>
+    
+    </md-content>
+

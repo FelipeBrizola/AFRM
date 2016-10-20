@@ -14,17 +14,23 @@
                 'password': pass
             };
 
+            $scope.isLoading = true;
+
             credentialsService.login(credential)
                 .success(function (credential) {
+
+                    $scope.isLoading = false;
+
                     if (credential) {
                         window.localStorage.setItem('CREDENTIAL', JSON.stringify(credential));
                         $rootScope.credential = credential;
-                        $location.path('/estagios');
+                        $location.path('/solicitacoes');
                     }
                     else
                         $scope.isWrongLogin = true;
                 })
                 .error(function(reason) {
+                    $scope.isLoading = false;
                     console.log(reason); // eslint-disable-line no-console
                 });
         };

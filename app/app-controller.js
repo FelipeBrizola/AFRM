@@ -26,14 +26,13 @@
 
         $rootScope.$on('$routeChangeSuccess', function () {
 
-            if ($location.path() === '/empresas')
-                $scope.currentMenuIndex =1;
+            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
 
-            else if ($location.path() === '/solicitacao')
+            if ($location.path() === '/empresas')
                 $scope.currentMenuIndex = 0;
 
-            else if ($location.path() === '/estagios')
-                $scope.currentMenuIndex = 2;
+            else if ($location.path() === '/solicitacoes')
+                $scope.currentMenuIndex = 1;
 
             else
                 $scope.currentMenuIndex = -1;

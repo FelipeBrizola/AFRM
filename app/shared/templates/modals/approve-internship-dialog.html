@@ -1,0 +1,34 @@
+<md-progress-linear ng-show="isSaving" md-mode="indeterminate"></md-progress-linear>
+
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>solicitação de estágio</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="closeDialog()">
+                <md-icon md-svg-src="../../../../assets/icons/icon_close.svg" aria-label="Close dialog" class="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <!-- Coordenador aprovando ou nao solicitacao de estagio -->
+    <div ng-if="credential.role === 'coordinator' " layout-padding>
+
+        <h2 style="color: gray">Aprovar solicitação de estágio?</h2>
+    
+        <div>
+            <md-button ng-click="save(true)" type="submit" class="md-primary md-raised">Sim</md-button>
+        
+            <md-button ng-click="save(false)" type="submit" class="md-primary md-raised">Nao</md-button>
+        </div>
+    
+    </div>
+
+    <!-- Estudante cancelando solicitacao de estagio -->
+    <div ng-if="credential.role === 'student' " layout-padding>
+        <h2 style="color: gray">Cancelar solicitação de estágio?</h2>
+        <div>
+            <md-button ng-click="save(false)" type="submit" class="md-primary md-raised">Sim</md-button>        
+        </div>
+    </div>
+

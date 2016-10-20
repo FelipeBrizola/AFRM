@@ -1,32 +1,37 @@
-<div layout="column" flex="50" style="margin: auto" layout-padding ng-cloak>
-	<md-content style="color:grey; padding:20px; border-radius: 5px;" class="md-no-momentum">
+<div layout="column" flex="50" style="margin: auto; margin-top: 20px">
+	<md-content style="color:grey; border-radius: 5px;" class="md-no-momentum">
 
-		<h2 style="text-align:center">AFRM - SISTEMAS</h2>
+    <md-progress-linear ng-show="isLoading" md-mode="indeterminate"></md-progress-linear>
 
-    	<md-input-container class="md-icon-float md-block">
-        <label>Email</label>
-        <md-icon class="icon" md-svg-src="../../../assets/icons/icon_email.svg"></md-icon>
-        <input ng-model="email" type="text">
-    	</md-input-container>
+    <div style="padding:20px">
 
-		<md-input-container style="margin-bottom:0" class="md-icon-float md-block">
-			<label>Senha</label>
-			<md-icon class="icon" md-svg-src="../../../assets/icons/icon_lock.svg"></md-icon>
-			<input type="password" ng-model="password" type="text"x>
-    </md-input-container>
+      <h2 style="text-align:center">AFRM - SISTEMAS</h2>
 
-    <div style="width: 100%; height:20px; text-align: center;">
-      <span ng-show="isWrongLogin" style="color: #d44179; ;margin-bottom: 30px; font-size: 13px;">Email ou senha incorretos</span>
-    </div>
+        <md-input-container class="md-icon-float md-block">
+          <label>Email</label>
+          <md-icon class="icon" md-svg-src="../../../assets/icons/icon_email.svg"></md-icon>
+          <input ng-model="email" type="text">
+        </md-input-container>
 
-		<md-button style="width: 100%; background-color: #d44179; margin: 0; color: white;"	 ng-click="login(email, password)">
-			Entrar
-		</md-button>
+      <md-input-container style="margin-bottom:0" class="md-icon-float md-block">
+        <label>Senha</label>
+        <md-icon class="icon" md-svg-src="../../../assets/icons/icon_lock.svg"></md-icon>
+        <input type="password" ng-model="password" type="text"x>
+      </md-input-container>
 
-    <div style="font-size: 13px; text-align: center; margin-top: 20px;">
-      <span>Ainda nao é cadastrado?
-        <a href="/registro">Cadastre-se agora</a>
-      </span>
+      <div style="width: 100%; height:20px; text-align: center;">
+        <span ng-show="isWrongLogin" style="color: #d44179; ;margin-bottom: 30px; font-size: 13px;">Email ou senha incorretos</span>
+      </div>
+
+      <md-button style="width: 100%; background-color: #d44179; margin: 0; color: white;"	 ng-click="login(email, password)">
+        Entrar
+      </md-button>
+
+      <div style="font-size: 13px; text-align: center; margin-top: 20px;">
+        <span>Ainda nao é cadastrado?
+          <a href="/registro">Cadastre-se agora</a>
+        </span>
+      </div>
     </div>
 
     <md-content>

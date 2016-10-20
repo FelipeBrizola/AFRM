@@ -56,14 +56,13 @@
 
         $rootScope.$on('$routeChangeSuccess', function () {
 
-            if ($location.path() === '/empresas')
-                $scope.currentMenuIndex =1;
+            $scope.credential = JSON.parse(window.localStorage.getItem('CREDENTIAL'));
 
-            else if ($location.path() === '/solicitacao')
+            if ($location.path() === '/empresas')
                 $scope.currentMenuIndex = 0;
 
-            else if ($location.path() === '/estagios')
-                $scope.currentMenuIndex = 2;
+            else if ($location.path() === '/solicitacoes')
+                $scope.currentMenuIndex = 1;
 
             else
                 $scope.currentMenuIndex = -1;
@@ -88,17 +87,12 @@
                 'controller'  : 'LoginController'
             })
 
-            .when('/solicitacao', {
-                'templateUrl' : 'app/components/solicitation/solicitation.html',
-                'controller'  : 'SolicitationController'
-            })
-
             .when('/empresas', {
                 'templateUrl' : 'app/components/companies/companies.html',
                 'controller'  : 'CompaniesController'
             })
 
-            .when('/estagios', {
+            .when('/solicitacoes', {
                 'templateUrl' : 'app/components/internships/internships.html',
                 'controller'  : 'InternshipsController'
             })
@@ -190,15 +184,27 @@
 
     function InternshipsController($scope, $mdDialog, internshipsService) {
 
-        $scope.showDialog = function(internship, credential) {
+        $scope.approveInternshipDialog = function(internship, credential, ev) {
             if (internship.status === 'Aguardando aprovação' && ($scope.credential.role === 'coordinator' || $scope.credential.role === 'student'))
                 $mdDialog.show({
-                    'controller'          : 'InternshipDialogController',
-                    'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
-                    'parent'              : angular.element(document.body),
+                    'controller'          : 'ApproveInternshipDialogController',
+                    'templateUrl'         : 'app/shared/templates/modals/approve-internship-dialog.html',
                     'locals'              : { 'internship': internship || {}, 'credential': credential },
+                    'parent'              : angular.element(document.body),
+                    'targetEvent'         : ev,
                     'clickOutsideToClose' : true
                 });
+        };
+
+        $scope.internshipDialog = function (internship, ev) {
+            $mdDialog.show({
+                'controller'          : 'InternshipDialogController',
+                'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
+                'locals'              : { 'internship': internship || {} },
+                'parent'              : angular.element(document.body),
+                'targetEvent'         : ev,
+                'clickOutsideToClose' : true
+            });
         };
 
         $scope.search = function(query) {
@@ -260,17 +266,23 @@
                 'password': pass
             };
 
+            $scope.isLoading = true;
+
             credentialsService.login(credential)
                 .success(function (credential) {
+
+                    $scope.isLoading = false;
+
                     if (credential) {
                         window.localStorage.setItem('CREDENTIAL', JSON.stringify(credential));
                         $rootScope.credential = credential;
-                        $location.path('/estagios');
+                        $location.path('/solicitacoes');
                     }
                     else
                         $scope.isWrongLogin = true;
                 })
                 .error(function(reason) {
+                    $scope.isLoading = false;
                     console.log(reason); // eslint-disable-line no-console
                 });
         };
@@ -436,6 +448,58 @@
 
     'use strict';
 
+    function ApproveInternshipDialogController($scope, $mdDialog, internshipsService, locals) {
+
+        function updateInternship() {
+            $scope.isSaving = true;
+
+            internshipsService.update($scope.internship)
+                .success(function() {
+                    $scope.isSaving = false;
+                    $mdDialog.hide($scope.internship);
+                })
+                .error(function(reason) {
+                    console.log(reason); // eslint-disable-line no-console
+                    $scope.isSaving = false;
+                    $mdDialog.hide();
+                });
+        }
+
+        $scope.save = function(isApprove) {
+
+            if (isApprove && $scope.credential.role === 'coordinator') {
+                $scope.internship.status = 'Em andamento';
+                $scope.internship.begin  = moment().format('DD/MM/YYYY');
+                $scope.internship.end    = moment(moment()).add(6, 'months').format('DD/MM/YYYY');
+            }
+            else if (!isApprove && $scope.credential.role === 'coordinator')
+                $scope.internship.status = 'Reprovado';
+
+            else if (!isApprove && $scope.credential.role === 'student')
+                $scope.internship.status = 'Cancelado';
+
+            updateInternship();
+        };
+
+        $scope.closeDialog = function() {
+            $mdDialog.cancel();
+        };
+
+        (function init() {
+            $scope.internship = locals.internship || {};
+            $scope.credential = locals.credential || {};
+        })();
+    }
+
+    ApproveInternshipDialogController.$inject = [ '$scope', '$mdDialog', 'internshipsService', 'locals' ];
+
+    angular.module('afrmApp').controller('ApproveInternshipDialogController', ApproveInternshipDialogController);
+
+}());
+(function () {
+
+    'use strict';
+
     function ManageCompanyController($scope, $mdDialog, companiesService, locals) {
 
         $scope.save = function(company, status) {
@@ -480,44 +544,12 @@
 
     function InternshipDialogController($scope, $mdDialog, internshipsService, locals) {
 
-        function updateInternship() {
-            $scope.isSaving = true;
-
-            internshipsService.update($scope.internship)
-                .success(function() {
-                    $scope.isSaving = false;
-                    $mdDialog.hide($scope.internship);
-                })
-                .error(function(reason) {
-                    console.log(reason); // eslint-disable-line no-console
-                    $scope.isSaving = false;
-                    $mdDialog.hide();
-                });
-        }
-
-        $scope.save = function(isApprove) {
-
-            if (isApprove && $scope.credential.role === 'coordinator') {
-                $scope.internship.status = 'Em andamento';
-                $scope.internship.begin  = moment().format('DD/MM/YYYY');
-                $scope.internship.end    = moment(moment()).add(6, 'months').format('DD/MM/YYYY');
-            }
-            else if (!isApprove && $scope.credential.role === 'coordinator')
-                $scope.internship.status = 'Reprovado';
-
-            else if (!isApprove && $scope.credential.role === 'student')
-                $scope.internship.status = 'Cancelado';
-
-            updateInternship();
-        };
-
         $scope.closeDialog = function() {
             $mdDialog.cancel();
         };
 
         (function init() {
             $scope.internship = locals.internship || {};
-            $scope.credential = locals.credential || {};
         })();
     }
 

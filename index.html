@@ -31,22 +31,16 @@
 
             <md-tabs ng-show="currentMenuIndex !== -1" md-selected="currentMenuIndex" style="min-height: 0 !important; background-color: white">
                 
-                <md-tab ng-click="menu('/solicitacao')" label="Solicitações">
-           
-                </md-tab>
-                <md-tab ng-if="credential.role !== 'student'" ng-click="menu('/empresas')" label="Empresas">
-                
-                </md-tab>
-                <md-tab ng-click="menu('/estagios')" label="Estagios">
-            
-                </md-tab>
+                <md-tab ng-if="credential.role !== 'student'" ng-click="menu('/empresas')" label="Empresas"></md-tab>
+
+                <md-tab ng-click="menu('/solicitacoes')" label="Solicitações"></md-tab>
    
             </md-tabs>
             
             <md-icon ng-click="logout()" style="cursor: pointer ;position: absolute; margin-top: -36px; right: 0;" class="icon" md-svg-src="../../../assets/icons/icon_exit.svg">
-            <md-tooltip md-direction="left">
-                Sair
-            </md-tooltip>
+                <md-tooltip md-direction="left">
+                    Sair
+                </md-tooltip>
             </md-icon>
             
 

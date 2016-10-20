@@ -8,15 +8,27 @@
 
     function InternshipsController($scope, $mdDialog, internshipsService) {
 
-        $scope.showDialog = function(internship, credential) {
+        $scope.approveInternshipDialog = function(internship, credential, ev) {
             if (internship.status === 'Aguardando aprovação' && ($scope.credential.role === 'coordinator' || $scope.credential.role === 'student'))
                 $mdDialog.show({
-                    'controller'          : 'InternshipDialogController',
-                    'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
-                    'parent'              : angular.element(document.body),
+                    'controller'          : 'ApproveInternshipDialogController',
+                    'templateUrl'         : 'app/shared/templates/modals/approve-internship-dialog.html',
                     'locals'              : { 'internship': internship || {}, 'credential': credential },
+                    'parent'              : angular.element(document.body),
+                    'targetEvent'         : ev,
                     'clickOutsideToClose' : true
                 });
+        };
+
+        $scope.internshipDialog = function (internship, ev) {
+            $mdDialog.show({
+                'controller'          : 'InternshipDialogController',
+                'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
+                'locals'              : { 'internship': internship || {} },
+                'parent'              : angular.element(document.body),
+                'targetEvent'         : ev,
+                'clickOutsideToClose' : true
+            });
         };
 
         $scope.search = function(query) {

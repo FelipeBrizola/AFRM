@@ -1,16 +1,25 @@
  <md-progress-linear ng-show="isLoadingCompany" md-mode="indeterminate"></md-progress-linear>
 
- <!-- Coordenador aprovando ou nao solicitacao de estagio -->
- <md-content layout-padding>
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>solicitação de empresa</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="closeDialog()">
+                <md-icon md-svg-src="../../../../assets/icons/icon_close.svg" aria-label="Close dialog" class="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
 
-    <h2 style="color: gray">Aprovar empresa?</h2>
- 
-    <div>
-        <md-button ng-click="save(company, true)" type="submit" class="md-primary md-raised">Sim</md-button>
+ <!-- Coordenador aprovando ou nao solicitacao de estagio -->
+    <md-content layout-padding>
+
+        <h2 style="color: gray">Aprovar empresa?</h2>
+        <div>
+            <md-button ng-click="save(company, true)" type="submit" class="md-primary md-raised">Sim</md-button>
+            <md-button ng-click="save(company, false)" type="submit" class="md-primary md-raised">Nao</md-button>
+        </div>
     
-        <md-button ng-click="save(company, false)" type="submit" class="md-primary md-raised">Nao</md-button>
-    
-        <md-button ng-click="closeDialog()" type="submit" class="md-primary md-raised">Fechar</md-button>
-    </div>
- 
-</md-content>
+    </md-content>
+
+</md-dialog>

@@ -11,7 +11,7 @@
         <div style="display: inline-block; width: 74%;">
 
             <md-input-container style="margin: 0 2%; 0 2%; min-width: 200px;">
-            <label>Filtro</label>
+            <label>Status</label>
                 <md-select ng-model="query.status">
                     <md-option ng-repeat="item in status" >
                     {{item}}
@@ -32,6 +32,7 @@
             <table md-table>
                 <thead md-head md-order="tableParams.sort" md-on-reorder="reorderTable">
                     <tr md-row>
+                        <th md-column md-order-by="company">Código de estágio</th>
                         <th md-column md-order-by="company">Empresa</th>
                         <th md-column md-order-by="studant">Aluno</th>
                         <th md-column md-order-by="class">Curso</th>
@@ -48,14 +49,15 @@
                     </tr>
                     </thead>
                 <tbody md-body>
-                <tr md-row md-select="company" ng-repeat="internship in internships track by $index" ng-click="showDialog(internship, credential)" style="cursor: pointer">
-                    <td md-cell>{{internship.company.name}}</td>
-                    <td md-cell>{{internship.student.name}}</td>
-                    <td md-cell>{{internship.class.name}}</td>
-                    <td md-cell>{{internship.begin}}</td>
-                    <td md-cell>{{internship.end}}</td>
-                    <td md-cell>{{internship.status}}</td>
-                </tr>
+                    <tr md-row md-select="company" ng-repeat="internship in internships track by $index" >
+                        <td md-cell ng-click="internshipDialog(internship, $event)"> <a> {{internship._id}} </a> </td>
+                        <td md-cell>{{internship.company.name}}</td>
+                        <td md-cell>{{internship.student.name}}</td>
+                        <td md-cell>{{internship.class.name}}</td>
+                        <td md-cell>{{internship.begin}}</td>
+                        <td md-cell>{{internship.end}}</td>
+                        <td md-cell ng-click="approveInternshipDialog(internship, credential, $event)">{{internship.status}}</td>
+                    </tr>
                 </tbody>
             </table>
         </md-table-container>

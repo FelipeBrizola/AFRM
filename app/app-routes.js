@@ -11,17 +11,12 @@
                 'controller'  : 'LoginController'
             })
 
-            .when('/solicitacao', {
-                'templateUrl' : 'app/components/solicitation/solicitation.html',
-                'controller'  : 'SolicitationController'
-            })
-
             .when('/empresas', {
                 'templateUrl' : 'app/components/companies/companies.html',
                 'controller'  : 'CompaniesController'
             })
 
-            .when('/estagios', {
+            .when('/solicitacoes', {
                 'templateUrl' : 'app/components/internships/internships.html',
                 'controller'  : 'InternshipsController'
             })
