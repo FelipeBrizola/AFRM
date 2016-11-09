@@ -9,6 +9,10 @@
         };
 
         $scope.update = function (internship) {
+
+            internship.begin = moment(internship.begin, 'DD/MM/YYYY');
+            internship.begin = moment(internship.begin).format('DD/MM/YYYY');
+
             internshipsService.update(internship)
                 .success(function(result) {
 
