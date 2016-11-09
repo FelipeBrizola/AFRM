@@ -33,6 +33,9 @@
 
             else if ($location.path() === '/solicitacoes')
                 $scope.currentMenuIndex = 1;
+            
+            else if ($location.path() === '/logs')
+                $scope.currentMenuIndex = 2;
 
             else
                 $scope.currentMenuIndex = -1;

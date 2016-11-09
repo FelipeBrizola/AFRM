@@ -42,8 +42,8 @@
     // Main Controller
     function MainController($scope, $rootScope, $location) {
 
-        // $rootScope.serverUrl = 'http://localhost:3000/';
-        $rootScope.serverUrl = 'https://dev-sistemas-server.herokuapp.com/';
+        $rootScope.serverUrl = 'http://localhost:3000/';
+        // $rootScope.serverUrl = 'https://dev-sistemas-server.herokuapp.com/';
 
         $scope.menu = function(path) {
             $location.path(path);
@@ -63,6 +63,9 @@
 
             else if ($location.path() === '/solicitacoes')
                 $scope.currentMenuIndex = 1;
+            
+            else if ($location.path() === '/logs')
+                $scope.currentMenuIndex = 2;
 
             else
                 $scope.currentMenuIndex = -1;
@@ -95,6 +98,11 @@
             .when('/solicitacoes', {
                 'templateUrl' : 'app/components/internships/internships.html',
                 'controller'  : 'InternshipsController'
+            })
+
+            .when('/logs', {
+                'templateUrl' : 'app/components/logs/logs.html',
+                'controller'  : 'LogsController'
             })
 
             .when('/registro', {
@@ -331,6 +339,30 @@
 
     'use strict';
 
+    angular.module('afrmApp').controller('LogsController', LogsController);
+
+    LogsController.$inject = [ '$scope', 'logsService' ];
+
+    function LogsController($scope, logsService) {
+
+        (function init() {
+          
+            logsService.get()
+                .success(function(logs) {
+                    $scope.logs = logs;
+                })
+                .error(function(reason) {
+                    console.log(reason); // eslint-disable-line no-console
+                });
+
+        }());
+    }
+}());
+
+(function() {
+
+    'use strict';
+
     angular.module('afrmApp').controller('SolicitationController', SolicitationController);
 
     SolicitationController.$inject = [ '$scope' ];
@@ -364,6 +396,7 @@
         };
 
         this.update = function (company) {
+            company.changer = JSON.parse(window.localStorage.getItem('CREDENTIAL'))._id;
             return $http.put($rootScope.serverUrl + module, company);
         };
 
@@ -434,6 +467,7 @@
         };
 
         this.update = function (internship) {
+            internship.changer = JSON.parse(window.localStorage.getItem('CREDENTIAL'))._id;
             return $http.put($rootScope.serverUrl + module, internship);
         };
 
@@ -442,6 +476,25 @@
     InternshipsService.$inject = [ '$http', '$rootScope' ];
 
     angular.module('afrmApp').service('internshipsService', InternshipsService);
+
+}());
+(function () {
+
+    'use strict';
+
+    function LogsService($http, $rootScope) {
+
+        var module = 'logs';
+
+        this.get = function () {
+            return $http.get($rootScope.serverUrl + module);
+        };
+
+    }
+
+    LogsService.$inject = [ '$http', '$rootScope' ];
+
+    angular.module('afrmApp').service('logsService', LogsService);
 
 }());
 (function () {

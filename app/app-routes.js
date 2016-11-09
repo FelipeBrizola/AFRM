@@ -21,6 +21,11 @@
                 'controller'  : 'InternshipsController'
             })
 
+            .when('/logs', {
+                'templateUrl' : 'app/components/logs/logs.html',
+                'controller'  : 'LogsController'
+            })
+
             .when('/registro', {
                 'templateUrl' : 'app/components/login/register.html',
                 'controller'  : 'RegisterController'

@@ -22,6 +22,7 @@
         };
 
         this.update = function (internship) {
+            internship.changer = JSON.parse(window.localStorage.getItem('CREDENTIAL'))._id;
             return $http.put($rootScope.serverUrl + module, internship);
         };
 

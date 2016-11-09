@@ -1,0 +1,36 @@
+<md-content flex="100" style="min-width: 800px; margin: auto; max-width: 93%; margin-top: 50px">
+
+    <!-- TABLE CONTAINER --> 
+    <md-card style="margin: auto;">
+
+        <md-table-container>
+            <table md-table>
+                <thead md-head md-order="tableParams.sort" md-on-reorder="reorderTable">
+                    <tr md-row>
+                        <th md-column md-order-by="user.id">ID - Usuário</th>
+                        <th md-column md-order-by="user.name">Usuário</th>
+                        <th md-column md-order-by="date">Data/hora</th>
+                        <th md-column md-order-by="change">Alteracao realizada</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <th >
+                            <md-progress-linear layout="row" md-mode="indeterminate" ng-show="isLoadingLogs" class="md-accent"></md-progress-linear>
+                        </th>
+                    </tr>
+                    </thead>
+                <tbody md-body>
+                    <tr md-row md-select="log" ng-repeat="log in logs track by $index" >
+                        <td md-cell>{{log.user.id}}</td>
+                        <td md-cell>{{log.user.name}}</td>
+                        <td md-cell>{{log.date}}</td>
+                        <td md-cell>{{log.change}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tableParams.limit" md-page="tableParams.page" md-limit-options="[5, 10, 15]" md-total="{{tableParams.total}}" md-on-paginate="getCompanies" md-page-select></md-table-pagination>
+    </md-card>
+
+</md-content>
