@@ -12,79 +12,78 @@
     </md-toolbar>
 
 
-    <md-content layout-padding>
+    <md-content layout-padding >
     
-        <div layout="row">
-            <md-input-container flex="50">
-                <label>Código de estágio</label>
-                <input ng-disabled="true" type="text" ng-model="internship._id">
-            </md-input-container>
+        <form name="internshipForm">
 
-            <div flex="10"></div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Código de estágio</label>
+                    <input ng-disabled="true" type="text" ng-model="internship._id">
+                </md-input-container>
 
-            <md-input-container flex="50">
-                <label>Empresa</label>
-                <input ng-disabled="!isEditable" type="text" ng-model="internship.company.name" ng-maxlength="50">
-            </md-input-container>
+                <div flex="10"></div>
 
-            <div flex="10"></div>
+                <md-input-container flex="50">
+                    <label>Empresa</label>
+                    <input ng-disabled="!isEditable" type="text" ng-model="internship.company.name" required ng-maxlength="50">
+                </md-input-container>
 
-            <md-input-container flex="50">
-                <label>Aluno</label>
-                <input ng-disabled="true" type="text" ng-model="internship.student.name">
-            </md-input-container>
-        </div>
+                <div flex="10"></div>
 
-        <div layout="row">
-            <md-input-container flex="50">
-                <label>Curso</label>
-                <input ng-disabled="true" type="text" ng-model="internship.class.name">
-            </md-input-container>
+                <md-input-container flex="50">
+                    <label>Aluno</label>
+                    <input ng-disabled="true" type="text" ng-model="internship.student.name">
+                </md-input-container>
+            </div>
 
-            <div flex="10"></div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Curso</label>
+                    <input ng-disabled="true" type="text" ng-model="internship.class.name">
+                </md-input-container>
 
-            <md-input-container flex="50">
-                <label>Começo</label>
-                <input ng-pattern="dateRegex" placeholder="(ex: 24/12/2016)" ng-disabled="!isEditable" type="text" ng-model="internship.begin" ng-maxlength="12">
-            </md-input-container>
+                <div flex="10"></div>
 
-            <!--<md-input-container flex="50">
-                <label>Começo</label>
-                <md-datepicker ng-model="internship.begin"></md-datepicker>
-          </md-input-container>-->
+                <md-input-container flex="50">
+                    <label>Começo</label>
+                    <input ui-mask="99/99/9999" placeholder="__/__/____" ng-disabled="!isEditable" type="text" ng-model="internship.begin" required ng-maxlength="12">
+                </md-input-container>
 
-            <div flex="10"></div>
+                <div flex="10"></div>
 
-            <md-input-container flex="50">
-                <label>Término</label>
-                <input ng-disabled="true" type="text" ng-model="internship.end">
-            </md-input-container>
-        </div>
+                <md-input-container flex="50">
+                    <label>Término</label>
+                    <input ng-disabled="true" type="text" ng-model="internship.end">
+                </md-input-container>
+            </div>
 
-        <div layout="row">
-            <md-input-container flex="50">
-                <label>Status</label>
-                <input ng-disabled="true" type="text" ng-model="internship.status">
-            </md-input-container>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Status</label>
+                    <input ng-disabled="true" type="text" ng-model="internship.status">
+                </md-input-container>
 
-            <div flex="10"></div>
+                <div flex="10"></div>
 
-            <md-input-container flex="50">
-                <label>Responsável</label>
-                <input ng-disabled="!isEditable" type="text" ng-model="internship.company.responsable.name" ng-maxlength="50">
-            </md-input-container>
+                <md-input-container flex="50">
+                    <label>Responsável</label>
+                    <input ng-disabled="!isEditable" type="text" ng-model="internship.company.responsable.name" required ng-maxlength="50">
+                </md-input-container>
 
-            <div flex="10"></div>
+                <div flex="10"></div>
 
-            <md-input-container flex="50">
-                <label>Email Responsável</label>
-                <input ng-disabled="!isEditable"  type="text" ng-model="internship.company.responsable.email" ng-maxlength="50">
-            </md-input-container>
-        </div>
+                <md-input-container flex="50">
+                    <label>Email Responsável</label>
+                    <input ng-disabled="!isEditable"  type="text" ng-model="internship.company.responsable.email" required ng-maxlength="50">
+                </md-input-container>
+            </div>
 
-        <md-button ng-disabled="!isEditable" class="md-primary md-raised" style="float: right" ng-click="update(internship)">
-            Salvar
-        </md-button>
+            <md-button ng-disabled="!isEditable || internshipForm.$invalid" class="md-primary md-raised" style="float: right" ng-click="update(internship)">
+                Salvar
+            </md-button>
+
+        </form>
     
     </md-content>
 

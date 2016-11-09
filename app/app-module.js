@@ -7,7 +7,8 @@
         'ngAnimate',
         'ngRoute',
         'angular.filter',
-        'md.data.table'
+        'md.data.table',
+        'ui.mask'
     ])
 
         .config(function ($mdThemingProvider, $mdDateLocaleProvider) {

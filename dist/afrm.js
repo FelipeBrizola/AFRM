@@ -7,7 +7,8 @@
         'ngAnimate',
         'ngRoute',
         'angular.filter',
-        'md.data.table'
+        'md.data.table',
+        'ui.mask'
     ])
 
         .config(function ($mdThemingProvider, $mdDateLocaleProvider) {
@@ -358,30 +359,6 @@
 
     'use strict';
 
-    angular.module('afrmApp').controller('SolicitationController', SolicitationController);
-
-    SolicitationController.$inject = [ '$scope' ];
-
-    function SolicitationController($scope) {
-
-        $scope.approveSolicitation =  function() {
-
-        };
-
-        $scope.insertSolicitation = function() {
-
-        };
-
-        (function init() {
-        }());
-
-    }
-}());
-
-(function() {
-
-    'use strict';
-
     angular.module('afrmApp').controller('LogsController', LogsController);
 
     LogsController.$inject = [ '$scope', 'logsService' ];
@@ -410,6 +387,30 @@
                 });
 
         }());
+    }
+}());
+
+(function() {
+
+    'use strict';
+
+    angular.module('afrmApp').controller('SolicitationController', SolicitationController);
+
+    SolicitationController.$inject = [ '$scope' ];
+
+    function SolicitationController($scope) {
+
+        $scope.approveSolicitation =  function() {
+
+        };
+
+        $scope.insertSolicitation = function() {
+
+        };
+
+        (function init() {
+        }());
+
     }
 }());
 
