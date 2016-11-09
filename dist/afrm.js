@@ -42,8 +42,8 @@
     // Main Controller
     function MainController($scope, $rootScope, $location) {
 
-        $rootScope.serverUrl = 'http://localhost:3000/';
-        // $rootScope.serverUrl = 'https://dev-sistemas-server.herokuapp.com/';
+        // $rootScope.serverUrl = 'http://localhost:3000/';
+        $rootScope.serverUrl = 'https://dev-sistemas-server.herokuapp.com/';
 
         $scope.menu = function(path) {
             $location.path(path);
@@ -129,12 +129,16 @@
 
         function getCompanies(name) {
 
+            $scope.isLoadingCompanies = true;
+
             companiesService.get(name)
                 .success(function(companies) {
                     $scope.companies = companies;
+                    $scope.isLoadingCompanies = false;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
+                    $scope.isLoadingCompanies = false;
                 });
         }
 
@@ -208,10 +212,21 @@
             $mdDialog.show({
                 'controller'          : 'InternshipDialogController',
                 'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
-                'locals'              : { 'internship': internship || {} },
+                'locals'              : { 'internship': angular.copy(internship) || {} },
                 'parent'              : angular.element(document.body),
                 'targetEvent'         : ev,
                 'clickOutsideToClose' : true
+            }).then(function(updatedInternship) {
+                var i = 0;
+
+                // atualiza tabela com alteracoes realizadas na modal
+                for (i; i < $scope.internships.length; i += 1) {
+                    if ($scope.internships[i]._id === updatedInternship._id) {
+                        $scope.internships[i] = updatedInternship;
+                        break;
+                    }
+                }
+
             });
         };
 
@@ -246,12 +261,16 @@
 
             query = {'credentialId': $scope.credential._id};
 
+            $scope.isLoadingInternships = true;
+
             internshipsService.get(query)
                 .success(function(internships) {
                     $scope.internships = internships;
+                    $scope.isLoadingInternships = false;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
+                    $scope.isLoadingInternships = false;
                 });
 
         }());
@@ -339,30 +358,6 @@
 
     'use strict';
 
-    angular.module('afrmApp').controller('LogsController', LogsController);
-
-    LogsController.$inject = [ '$scope', 'logsService' ];
-
-    function LogsController($scope, logsService) {
-
-        (function init() {
-          
-            logsService.get()
-                .success(function(logs) {
-                    $scope.logs = logs;
-                })
-                .error(function(reason) {
-                    console.log(reason); // eslint-disable-line no-console
-                });
-
-        }());
-    }
-}());
-
-(function() {
-
-    'use strict';
-
     angular.module('afrmApp').controller('SolicitationController', SolicitationController);
 
     SolicitationController.$inject = [ '$scope' ];
@@ -380,6 +375,41 @@
         (function init() {
         }());
 
+    }
+}());
+
+(function() {
+
+    'use strict';
+
+    angular.module('afrmApp').controller('LogsController', LogsController);
+
+    LogsController.$inject = [ '$scope', 'logsService' ];
+
+    function LogsController($scope, logsService) {
+
+        (function init() {
+
+            $scope.tableParams = {
+                'limit': 5,
+                'page': 1
+            };
+
+            $scope.isLoadingLogs = true;
+          
+            logsService.get()
+                .success(function(logs) {
+                    $scope.logs = logs;
+
+                    $scope.isLoadingLogs = false;
+                    $scope.tableParams.total = logs.length;
+                })
+                .error(function(reason) {
+                    $scope.isLoadingLogs = false;
+                    console.log(reason); // eslint-disable-line no-console
+                });
+
+        }());
     }
 }());
 
@@ -601,8 +631,25 @@
             $mdDialog.cancel();
         };
 
+        $scope.update = function (internship) {
+            internshipsService.update(internship)
+                .success(function(result) {
+
+                    $mdDialog.hide(internship);
+                })
+                .error(function(reason) {
+
+                });
+        };  
+
         (function init() {
+
+            var role = JSON.parse(window.localStorage.getItem('CREDENTIAL')).role; 
+
             $scope.internship = locals.internship || {};
+
+            $scope.isEditable = role === 'student' && $scope.internship && $scope.internship.status === 'Aguardando aprovação';
+
         })();
     }
 

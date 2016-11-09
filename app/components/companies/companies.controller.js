@@ -10,12 +10,16 @@
 
         function getCompanies(name) {
 
+            $scope.isLoadingCompanies = true;
+
             companiesService.get(name)
                 .success(function(companies) {
                     $scope.companies = companies;
+                    $scope.isLoadingCompanies = false;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
+                    $scope.isLoadingCompanies = false;
                 });
         }
 

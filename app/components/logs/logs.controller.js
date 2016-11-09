@@ -9,12 +9,23 @@
     function LogsController($scope, logsService) {
 
         (function init() {
+
+            $scope.tableParams = {
+                'limit': 5,
+                'page': 1
+            };
+
+            $scope.isLoadingLogs = true;
           
             logsService.get()
                 .success(function(logs) {
                     $scope.logs = logs;
+
+                    $scope.isLoadingLogs = false;
+                    $scope.tableParams.total = logs.length;
                 })
                 .error(function(reason) {
+                    $scope.isLoadingLogs = false;
                     console.log(reason); // eslint-disable-line no-console
                 });
 

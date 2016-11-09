@@ -24,10 +24,21 @@
             $mdDialog.show({
                 'controller'          : 'InternshipDialogController',
                 'templateUrl'         : 'app/shared/templates/modals/internship-dialog.html',
-                'locals'              : { 'internship': internship || {} },
+                'locals'              : { 'internship': angular.copy(internship) || {} },
                 'parent'              : angular.element(document.body),
                 'targetEvent'         : ev,
                 'clickOutsideToClose' : true
+            }).then(function(updatedInternship) {
+                var i = 0;
+
+                // atualiza tabela com alteracoes realizadas na modal
+                for (i; i < $scope.internships.length; i += 1) {
+                    if ($scope.internships[i]._id === updatedInternship._id) {
+                        $scope.internships[i] = updatedInternship;
+                        break;
+                    }
+                }
+
             });
         };
 
@@ -62,12 +73,16 @@
 
             query = {'credentialId': $scope.credential._id};
 
+            $scope.isLoadingInternships = true;
+
             internshipsService.get(query)
                 .success(function(internships) {
                     $scope.internships = internships;
+                    $scope.isLoadingInternships = false;
                 })
                 .error(function(reason) {
                     console.log(reason); // eslint-disable-line no-console
+                    $scope.isLoadingInternships = false;
                 });
 
         }());
