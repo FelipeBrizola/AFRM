@@ -19,6 +19,11 @@
           
             logsService.get()
                 .success(function(logs) {
+                    
+                    logs.forEach(function(log) {
+                        log.date = moment(log.date).format('DD/MM/YYYY - hh:mm');
+                    });
+
                     $scope.logs = logs;
 
                     $scope.isLoadingLogs = false;

@@ -376,6 +376,11 @@
           
             logsService.get()
                 .success(function(logs) {
+                    
+                    logs.forEach(function(log) {
+                        log.date = moment(log.date).format('DD/MM/YYYY - hh:mm');
+                    });
+
                     $scope.logs = logs;
 
                     $scope.isLoadingLogs = false;
@@ -643,7 +648,8 @@
                     $mdDialog.hide(internship);
                 })
                 .error(function(reason) {
-
+                    console.log(reason); // eslint-disable-line no-console
+                    $scope.closeDialog();
                 });
         };  
 

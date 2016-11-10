@@ -19,7 +19,8 @@
                     $mdDialog.hide(internship);
                 })
                 .error(function(reason) {
-
+                    console.log(reason); // eslint-disable-line no-console
+                    $scope.closeDialog();
                 });
         };  
 
